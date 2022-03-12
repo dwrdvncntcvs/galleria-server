@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const { hash, genSalt } = require("bcrypt");
+const { user } = require("pg/lib/defaults");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -66,6 +68,12 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "User",
       tableName: "users",
+      hooks: {
+        beforeCreate: async (user) => {
+          const salt = await genSalt(10, "a");
+          user.password = await hash(user.password, salt);
+        },
+      },
     }
   );
 
@@ -76,6 +84,5 @@ module.exports = (sequelize, DataTypes) => {
   User.findUserByUsername = async (username) => {
     return await User.findOne({ where: { username } });
   };
-  
   return User;
 };
