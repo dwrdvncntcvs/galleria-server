@@ -1,1 +1,1 @@
-exports.userRoutes = require("./userRotes");
+exports.userRoutes = require("./userRoutes");
