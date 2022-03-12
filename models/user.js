@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -13,15 +11,62 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User.init({
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  User.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
+      first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: [403, "\nFirst name should not be empty."] },
+          notNull: { msg: [403, "\nFirst name should not be empty."] },
+        },
+      },
+      last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: [403, "\nLast name should not be empty."] },
+          notNull: { msg: [403, "\nLast name should not be empty."] },
+        },
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: { msg: [403, "Username already exist."] },
+        validate: {
+          notEmpty: { msg: [403, "\nUsername should not be empty."] },
+          notNull: { msg: [403, "\nUsername should not be empty."] },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: { msg: [403, "\nEmail address already exist."] },
+        validate: {
+          notEmpty: { msg: [403, "\nEmail address should not be empty."] },
+          notNull: { msg: [403, "\nEmail address should not be empty."] },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: [403, "\nEmail address should not be empty."] },
+          notNull: { msg: [403, "\nEmail address should not be empty."] },
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "User",
+      tableName: "users",
+    }
+  );
   return User;
 };
