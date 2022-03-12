@@ -68,5 +68,14 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
     }
   );
+
+  User.findUserByEmail = async (email) => {
+    return await User.findOne({ where: { email } });
+  };
+
+  User.findUserByUsername = async (username) => {
+    return await User.findOne({ where: { username } });
+  };
+  
   return User;
 };
