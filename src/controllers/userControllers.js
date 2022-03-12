@@ -16,7 +16,7 @@ exports.createNewUser = async (req, res) => {
     const errorMessage =
       typeof err.message === "string"
         ? err.message.split(": ")[1].split(",\n")
-        : err.message;  
+        : err.message;
     await t.rollback();
 
     return res.status(errorMessage[0]).send({ msg: errorMessage[1] });
