@@ -1,7 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { hash, genSalt } = require("bcrypt");
-const { user } = require("pg/lib/defaults");
+const { hash, genSalt, compare } = require("bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -91,5 +90,10 @@ module.exports = (sequelize, DataTypes) => {
   User.findUserByUsername = async (username) => {
     return await User.findOne({ where: { username } });
   };
+
+  User.comparePassword = async (password, hashPassword) => {
+    return await compare(password, hashPassword);
+  };
+
   return User;
 };
