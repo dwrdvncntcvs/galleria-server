@@ -37,8 +37,10 @@ exports.userProfile = async (req, res) => {
   const username = req.params.username;
 
   try {
+    const user = await User.findOne({ where: { username } });
     const profile = {
-      user: await User.findOne({ where: { username } }),
+      user,
+      profile: await Profile.findOne({ where: { userId: user.id } }),
     };
 
     return res.send({ profile });
