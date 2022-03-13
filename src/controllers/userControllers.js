@@ -14,8 +14,8 @@ exports.createNewUser = async (req, res) => {
 
     return res.status(200).send({ msg: "Account created.", user: req.body });
   } catch (err) {
-    const error = errorMessage(err);
+    const { status, msg } = errorMessage(err);
     await t.rollback();
-    return res.status(error[0]).send({ msg: error[1] });
+    return res.status(status).send({ msg });
   }
 };
