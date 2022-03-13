@@ -30,3 +30,18 @@ exports.signIn = (req, res) => {
 
   return res.status(200).send({ token });
 };
+
+exports.userProfile = async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const profile = {
+      user: await User.findOne({ where: { username } }),
+    };
+
+    return res.send({ profile });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "Something went wrong." });
+  }
+};
