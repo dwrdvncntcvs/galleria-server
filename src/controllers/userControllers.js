@@ -1,4 +1,4 @@
-const { sequelize, User } = require("../../models");
+const { sequelize, User, Profile } = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { sign } = require("jsonwebtoken");
 const { SECRET_KEY } = require("../utils/constant");
@@ -8,10 +8,12 @@ exports.createNewUser = async (req, res) => {
 
   const t = await sequelize.transaction();
   try {
-    await User.create(
+    const user = await User.create(
       { first_name, last_name, username, email, password },
       { transaction: t }
     );
+
+    await Profile.create({ userId: user.id }, { transaction: t });
     await t.commit();
 
     return res.status(200).send({ msg: "Account created.", user: req.body });
