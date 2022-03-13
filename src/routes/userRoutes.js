@@ -7,10 +7,6 @@ const {
 
 const routes = express.Router();
 
-routes.post(
-  "/sign-up",
-  [checkIfUsernameExist, checkIfEmailExists],
-  createNewUser
-);
+routes.post("/sign-up", createNewUser);
 
 module.exports = routes;
