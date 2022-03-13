@@ -1,12 +1,14 @@
 const express = require("express");
-const { createNewUser } = require("../controllers/userControllers");
+const { createNewUser, signIn } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
-  checkIfUsernameExist,
+  validatePassword,
 } = require("../middlewares/userMiddleware");
 
 const routes = express.Router();
 
 routes.post("/sign-up", createNewUser);
+
+routes.post("/sign-in", [checkIfEmailExists, validatePassword], signIn);
 
 module.exports = routes;
