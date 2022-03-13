@@ -40,3 +40,12 @@ exports.authenticate = (req, res, next) => {
     next();
   });
 };
+
+exports.checkIfUsernameExist = async (req, res, next) => {
+  const username = req.params.username;
+
+  const isUserExist = await User.findUserByUsername(username);
+  if (!isUserExist) return res.status(404).send({ msg: "User doesn't exist." });
+
+  next();
+};
