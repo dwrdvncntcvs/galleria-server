@@ -75,3 +75,19 @@ exports.updateProfile = async (req, res) => {
     return res.status(status).send({ msg });
   }
 };
+
+exports.deleteUser = async (req, res) => {
+  const id = req.params.id;
+
+  const t = await sequelize.transaction();
+  try {
+    await User.destroy({ where: { id } }, { transaction: t });
+    await t.commit();
+
+    return res.status(200).send({ msg: "User Deleted." });
+  } catch (err) {
+    console.log(err.message)
+    await t.rollback();
+    return res.status(500).send({ msg: "Something went wrong." });
+  }
+};
