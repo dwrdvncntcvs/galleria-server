@@ -95,5 +95,9 @@ module.exports = (sequelize, DataTypes) => {
     return await compare(password, hashPassword);
   };
 
+  User.findUserByUserId = async (id) => {
+    return await User.findOne({ where: { id } });
+  };
+
   return User;
 };
