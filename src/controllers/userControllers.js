@@ -13,7 +13,7 @@ exports.createNewUser = async (req, res) => {
       { transaction: t }
     );
 
-    await Profile.create({ userId: user.id }, { transaction: t });
+    await Profile.create({ userId: user.id, bio: "" }, { transaction: t });
     await t.commit();
 
     return res.status(200).send({ msg: "Account created.", user: req.body });
@@ -47,5 +47,31 @@ exports.userProfile = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).send({ msg: "Something went wrong." });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  const id = req.params.id;
+  const { first_name, last_name, username, bio } = req.body;
+
+  const t = await sequelize.transaction();
+  try {
+    await User.update(
+      { first_name, last_name, username },
+      { where: { id } },
+      { transaction: t }
+    );
+
+    await Profile.update(
+      { bio },
+      { where: { userId: id } },
+      { transaction: t }
+    );
+
+    await t.commit();
+    return res.status(200).send({ msg: "Profile Updated." });
+  } catch (err) {
+    const { status, msg } = errorMessage(err);
+    return res.status(status).send({ msg });
   }
 };
