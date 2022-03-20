@@ -1,6 +1,7 @@
 const { User } = require("../../models");
 const { verify } = require("jsonwebtoken");
 const { SECRET_KEY } = require("../utils/constant");
+const { isUuidValid } = require("../utils/validation");
 
 exports.checkIfEmailExists = async (req, res, next) => {
   const { email } = req.body;
@@ -53,6 +54,8 @@ exports.checkIfUsernameExist = async (req, res, next) => {
 exports.canEdit = async (req, res, next) => {
   const id = req.params.id;
   const currentUser = req.user;
+
+  if (!isUuidValid(id)) return res.status(404).send({ msg: "User not found." });
 
   const user = await User.findUserByUserId(id);
   if (!user) return res.status(404).send({ msg: "User not found." });
