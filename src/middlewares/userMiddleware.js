@@ -49,3 +49,17 @@ exports.checkIfUsernameExist = async (req, res, next) => {
 
   next();
 };
+
+exports.canEdit = async (req, res, next) => {
+  const id = req.params.id;
+  console.log(`Edit ${id}`);
+  const currentUser = req.user;
+
+  const user = await User.findUserByUserId(id);
+  if (!user) return res.status(404).send({ msg: "User not found." });
+
+  if (currentUser.id !== id)
+    return res.status(403).send({ msg: "You have no access to this profile." });
+
+  next();
+};
