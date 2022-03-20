@@ -52,7 +52,6 @@ exports.checkIfUsernameExist = async (req, res, next) => {
 
 exports.canEdit = async (req, res, next) => {
   const id = req.params.id;
-  console.log(`Edit ${id}`);
   const currentUser = req.user;
 
   const user = await User.findUserByUserId(id);
