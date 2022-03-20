@@ -16,7 +16,7 @@ exports.createNewUser = async (req, res) => {
     await Profile.create({ userId: user.id, bio: "" }, { transaction: t });
     await t.commit();
 
-    return res.status(200).send({ msg: "Account created.", user: req.body });
+    return res.status(200).send({ msg: "Account created." });
   } catch (err) {
     const { status, msg } = errorMessage(err);
     await t.rollback();
