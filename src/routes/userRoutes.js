@@ -4,6 +4,7 @@ const {
   signIn,
   userProfile,
   updateProfile,
+  deleteUser,
 } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
@@ -25,10 +26,8 @@ routes.get(
   userProfile
 );
 
-routes.put(
-  "/update/profile/:id",
-  [authenticate, canEdit],
-  updateProfile
-);
+routes.put("/update/profile/:id", [authenticate, canEdit], updateProfile);
+
+routes.delete("/delete/user/:id", [authenticate, canEdit], deleteUser);
 
 module.exports = routes;
