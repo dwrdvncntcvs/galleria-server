@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.use("/images/avatars", express.static("images/avatars"));
+
 app.use(userRoutes);
 app.use(avatarRoutes);
 
