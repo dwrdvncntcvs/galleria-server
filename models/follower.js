@@ -38,5 +38,18 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "followers",
     }
   );
+
+  Follower.isUserFollowed = async (foundUser, user) => {
+    if (!foundUser) return false;
+
+    return (await Follower.findOne({
+      where: {
+        userId: foundUser.id,
+        followerId: user.id,
+      },
+    }))
+      ? true
+      : false;
+  };
   return Follower;
 };
