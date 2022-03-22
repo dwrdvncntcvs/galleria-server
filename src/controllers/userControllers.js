@@ -1,4 +1,4 @@
-const { sequelize, User, Profile } = require("../../models");
+const { sequelize, User, Profile, Avatar } = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { sign } = require("jsonwebtoken");
 const { SECRET_KEY } = require("../utils/constant");
@@ -14,6 +14,8 @@ exports.createNewUser = async (req, res) => {
     );
 
     await Profile.create({ userId: user.id, bio: "" }, { transaction: t });
+
+    await Avatar.create({ userId: user.id }, { transaction: t });
     await t.commit();
 
     return res.status(200).send({ msg: "Account created." });
@@ -41,6 +43,7 @@ exports.userProfile = async (req, res) => {
     const profile = {
       user,
       profile: await Profile.findOne({ where: { userId: user.id } }),
+      avatar: await Avatar.findOne({ where: { userId: user.id } }),
     };
 
     return res.send({ profile });
@@ -86,7 +89,6 @@ exports.deleteUser = async (req, res) => {
 
     return res.status(200).send({ msg: "User Deleted." });
   } catch (err) {
-    console.log(err.message)
     await t.rollback();
     return res.status(500).send({ msg: "Something went wrong." });
   }
