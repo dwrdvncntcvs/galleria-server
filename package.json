@@ -10,7 +10,8 @@
     "drop": "sequelize db:drop",
     "migrate": "sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
-    "undo:all": "sequelize db:migrate:undo:all"
+    "undo:all": "sequelize db:migrate:undo:all",
+    "model": "sequelize model:generate"
   },
   "author": "Edward Vincent Cuevas",
   "license": "ISC",
