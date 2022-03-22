@@ -10,15 +10,19 @@ module.exports = {
       },
       filename: {
         type: Sequelize.STRING,
+        defaultValue: "",
       },
       path: {
         type: Sequelize.STRING,
+        defaultValue: "",
       },
       mimetype: {
         type: Sequelize.STRING,
+        defaultValue: "",
       },
       size: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+        defaultValue: "",
       },
       userId: {
         type: Sequelize.UUID,
