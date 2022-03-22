@@ -39,12 +39,11 @@ exports.userProfile = async (req, res) => {
   const username = req.params.username;
 
   try {
-    const user = await User.findOne({ where: { username } });
-    const profile = {
-      user,
-      profile: await Profile.findOne({ where: { userId: user.id } }),
-      avatar: await Avatar.findOne({ where: { userId: user.id } }),
-    };
+    const profile = await User.findOne({
+      where: { username },
+      attributes: { exclude: ["password"] },
+      include: [{ model: Profile }, { model: Avatar }],
+    });
 
     return res.send({ profile });
   } catch (err) {
