@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Profile, Avatar, Follower }) {
       this.hasOne(Profile, { foreignKey: "userId" });
       this.hasOne(Avatar, { foreignKey: "userId" });
-      this.hasOne(Follower, { foreignKey: "userId" });
+      this.hasMany(Follower, { foreignKey: "userId" });
     }
   }
   User.init(
