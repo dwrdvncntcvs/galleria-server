@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       size: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       userId: {
@@ -48,8 +48,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Avatar",
-      tableName: "avatars"
+      tableName: "avatars",
     }
   );
+
+  Avatar.findAvatarByUserId = async (userId) => {
+    return await Avatar.findOne({ where: { userId } });
+  };
   return Avatar;
 };
