@@ -1,20 +1,12 @@
 const { Avatar } = require("../../models");
-const { isUuidValid } = require("../utils/validation");
 const fs = require("fs");
 
 const EMPTY = "";
 
 exports.checkIfAvatarExist = async (req, res, next) => {
-  const userId = req.params.userId;
-  const currentUser = req.user;
+  const id = req.params.id;
 
-  if (!isUuidValid(userId))
-    return res.status(400).send({ msg: "User doesn't exist." });
-
-  if (currentUser.id !== userId)
-    return res.status(403).send({ msg: "You have no access to this profile" });
-
-  const avatar = await Avatar.findAvatarByUserId(userId);
+  const avatar = await Avatar.findAvatarByUserId(id);
   if (!avatar) return res.status(404).send({ msg: "Avatar not found." });
 
   const { filename, path, mimetype, size } = avatar;
@@ -27,6 +19,19 @@ exports.checkIfAvatarExist = async (req, res, next) => {
     fs.unlink(`images/avatars/${filename}`, (err) => {
       if (err) console.log(err);
     });
+
+  next();
+};
+
+exports.removeAvatar = async (req, res, next) => {
+  const id = req.params.id;
+
+  const foundAvatar = await Avatar.findAvatarByUserId(id);
+  if (!foundAvatar) return res.status(404).send({ msg: "Avatar not found." });
+
+  fs.unlink(`images/avatars/${foundAvatar.filename}`, (err) => {
+    if (err) console.log(err);
+  });
 
   next();
 };
