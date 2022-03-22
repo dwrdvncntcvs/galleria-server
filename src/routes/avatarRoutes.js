@@ -5,7 +5,7 @@ const {
 } = require("../controllers/avatarControllers");
 const {
   checkIfAvatarExist,
-  removeAvatar,
+  removeAvatarImage,
 } = require("../middlewares/avatarMiddlewares");
 const { authenticate, canEdit } = require("../middlewares/userMiddleware");
 const Image = require("../utils/images");
@@ -26,7 +26,7 @@ routes.post(
 
 routes.delete(
   "/update-avatar/user/:id",
-  [authenticate, canEdit, removeAvatar],
+  [authenticate, canEdit, removeAvatarImage],
   removeAvatar
 );
 

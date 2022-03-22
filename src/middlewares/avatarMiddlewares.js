@@ -23,7 +23,7 @@ exports.checkIfAvatarExist = async (req, res, next) => {
   next();
 };
 
-exports.removeAvatar = async (req, res, next) => {
+exports.removeAvatarImage = async (req, res, next) => {
   const id = req.params.id;
 
   const foundAvatar = await Avatar.findAvatarByUserId(id);
