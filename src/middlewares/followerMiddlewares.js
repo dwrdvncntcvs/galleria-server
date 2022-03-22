@@ -5,6 +5,9 @@ exports.canFollow = async (req, res, next) => {
   const user = req.user;
   const foundUser = await User.findUserByUsername(username);
 
+  if (user.id === foundUser.id)
+    return res.status(403).send({ msg: "You can't follow yourself." });
+    
   const isUserFollowed = await Follower.isUserFollowed(foundUser, user);
   if (isUserFollowed)
     return res.status(403).send({
