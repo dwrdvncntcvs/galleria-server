@@ -25,7 +25,7 @@ routes.post(
 );
 
 routes.delete(
-  "/update-avatar/user/:id",
+  "/remove-avatar/user/:id",
   [authenticate, canEdit, removeAvatarImage],
   removeAvatar
 );
