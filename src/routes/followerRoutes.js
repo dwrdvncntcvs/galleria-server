@@ -1,5 +1,9 @@
 const express = require("express");
-const { followUser, getFollower } = require("../controllers/followerController");
+const {
+  followUser,
+  getFollower,
+  getFollowing,
+} = require("../controllers/followerController");
 const { canFollow } = require("../middlewares/followerMiddlewares");
 const {
   authenticate,
@@ -18,6 +22,12 @@ routes.get(
   "/:username/follower",
   [authenticate, checkIfUsernameExist],
   getFollower
+);
+
+routes.get(
+  "/:username/following",
+  [authenticate, checkIfUsernameExist],
+  getFollowing
 );
 
 module.exports = routes;
