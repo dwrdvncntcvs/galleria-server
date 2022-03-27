@@ -27,7 +27,7 @@ module.exports = {
       postId: {
         type: Sequelize.UUID,
         allowNull: false,
-        onDelete: "cascade",
+        onDelete: "CASCADE",
         references: {
           model: "posts",
           key: "id",

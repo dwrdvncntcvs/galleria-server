@@ -10,12 +10,12 @@ module.exports = {
       },
       content: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
-        onDelete: "cascade",
+        onDelete: "CASCADE",
         references: { model: "users", key: "id" },
       },
       createdAt: {

@@ -28,11 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       content: {
         type: DataTypes.TEXT,
-        allowNull: false,
-        validate: {
-          notEmpty: { msg: [403, "\nPost should not be empty."] },
-          notNull: { msg: [403, "\nPost should not be empty."] },
-        },
+        allowNull: true,
+        // validate: {
+        //   notEmpty: { msg: [403, "\nPost should not be empty."] },
+        //   notNull: { msg: [403, "\nPost should not be empty."] },
+        // },
       },
       userId: {
         type: DataTypes.UUID,
