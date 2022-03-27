@@ -55,22 +55,35 @@ module.exports = (sequelize, DataTypes) => {
   Follower.getFollowers = async (userId) => {
     const followerData = await Follower.findAll({ where: { userId } });
 
-    const followers = await Follower.getUser(followerData, "followers");
+    const users = await Follower.getUser(followerData, "followers");
 
-    return { userData: followers, count: followers.length };
+    return { userData: users, count: users.length };
+  };
+
+  Follower.getFollowing = async (userId) => {
+    const followingData = await Follower.findAll({
+      where: { followerId: userId },
+    });
+
+    const users = await Follower.getUser(followingData, "following");
+
+    return { userData: users, count: users.length };
   };
 
   Follower.getUser = async (userData, followType) => {
-    const parameter = followType === "followers" ? "followerId" : "userId";
+    const parameter = followType === "following" ? "userId" : "followerId";
+    console.log("Parameters: ", parameter);
     return await Promise.all(
       userData.map(async (data) => {
         const { User, Avatar } = require("../models");
 
-        return await User.findOne({
+        const user = await User.findOne({
           where: { id: data[parameter] },
           attributes: { exclude: ["password"] },
           include: [{ model: Avatar }],
         });
+
+        return user;
       })
     );
   };
