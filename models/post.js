@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
+        defaultValue: DataTypes.UUIDV4,
       },
       content: {
         type: DataTypes.TEXT,
