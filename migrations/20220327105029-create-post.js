@@ -12,10 +12,6 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      imageId: {
-        type: Sequelize.UUID,
-        allowNull: true,
-      },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,

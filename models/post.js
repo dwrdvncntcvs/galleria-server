@@ -34,10 +34,6 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: [403, "\nPost should not be empty."] },
         },
       },
-      imageId: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
