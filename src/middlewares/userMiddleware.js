@@ -45,9 +45,10 @@ exports.authenticate = (req, res, next) => {
 exports.checkIfUsernameExist = async (req, res, next) => {
   const username = req.params.username;
 
-  const isUserExist = await User.findUserByUsername(username);
-  if (!isUserExist) return res.status(404).send({ msg: "User doesn't exist." });
+  const user = await User.findUserByUsername(username);
+  if (!user) return res.status(404).send({ msg: "User doesn't exist." });
 
+  req.userParams = user;
   next();
 };
 
