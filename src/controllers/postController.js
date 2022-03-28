@@ -1,4 +1,4 @@
-const { sequelize, Post } = require("../../models");
+const { sequelize, Post, ImagePost } = require("../../models");
 const { errorMessage } = require("../utils/error");
 
 exports.createTextPost = async (req, res) => {
@@ -13,6 +13,31 @@ exports.createTextPost = async (req, res) => {
     return res.status(200).send({ msg: "Posted." });
   } catch (err) {
     console.log("Error: ", err);
+    const { status, msg } = errorMessage(err);
+    await t.rollback();
+    return res.status(status).send({ msg });
+  }
+};
+
+exports.createImagePost = async (req, res) => {
+  const { content } = req.body;
+  const user = req.user;
+  const { filename, path, mimetype, size } = req.file;
+
+  const t = await sequelize.transaction();
+  try {
+    const post = await Post.create(
+      { content, userId: user.id },
+      { transaction: t }
+    );
+    await ImagePost.create(
+      { filename, path, mimetype, size, postId: post.id },
+      { transaction: t }
+    );
+    await t.commit();
+
+    return res.status(200).send({ msg: "Posted." });
+  } catch (err) {
     const { status, msg } = errorMessage(err);
     await t.rollback();
     return res.status(status).send({ msg });
