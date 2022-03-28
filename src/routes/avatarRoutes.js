@@ -7,6 +7,7 @@ const {
   checkIfAvatarExist,
   removeAvatarImage,
 } = require("../middlewares/avatarMiddlewares");
+const { isImageValid } = require("../middlewares/postMiddlewares");
 const { authenticate, canEdit } = require("../middlewares/userMiddleware");
 const Image = require("../utils/images");
 
@@ -20,7 +21,13 @@ const upload = new Image({
 
 routes.post(
   "/add-avatar/:id",
-  [authenticate, canEdit, upload, checkIfAvatarExist],
+  [
+    authenticate,
+    canEdit,
+    upload,
+    isImageValid("images/avatars"),
+    checkIfAvatarExist,
+  ],
   uploadAvatar
 );
 
