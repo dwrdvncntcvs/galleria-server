@@ -34,6 +34,29 @@ exports.isImageValid = (location) => (req, res, next) => {
   next();
 };
 
+exports.isImagesValid = (location) => (req, res, next) => {
+  const files = req.files;
+
+  if (files.length === 0)
+    return res.status(403).send({ msg: "Images cannot be empty." });
+
+  const filesArr = files.filter((file) => {
+    const { filename, mimetype } = file;
+    const ext = mimetype.split("/").reverse()[0];
+
+    if (!checkImage(ext)) {
+      fs.unlink(`${location}${filename}`, (err) => {
+        if (err) console.log(err);
+      });
+    } else {
+      return file;
+    }
+  });
+
+  req.filesArr = filesArr;
+  next();
+};
+
 const checkImage = (ext) => {
   return ext === JPEG || ext === PNG || ext === JPG ? true : false;
 };
