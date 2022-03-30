@@ -2,8 +2,13 @@ const express = require("express");
 const {
   createTextPost,
   createImagePost,
+  createImagesPost,
 } = require("../controllers/postController");
-const { hasText, isImageValid } = require("../middlewares/postMiddlewares");
+const {
+  hasText,
+  isImageValid,
+  isImagesValid,
+} = require("../middlewares/postMiddlewares");
 const { authenticate } = require("../middlewares/userMiddleware");
 const { TEXT } = require("../utils/constant");
 const Image = require("../utils/images");
@@ -28,6 +33,12 @@ routes.post(
   "/create-new-post/image",
   [authenticate, upload("single"), isImageValid("images/posts")],
   createImagePost
+);
+
+routes.post(
+  "/create-new-post/images",
+  [authenticate, upload("array"), isImagesValid("images/posts/")],
+  createImagesPost
 );
 
 module.exports = routes;
