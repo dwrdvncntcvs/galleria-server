@@ -1,5 +1,6 @@
 const { TEXT, IMAGE, JPEG, JPG, PNG } = require("../utils/constant");
 const fs = require("fs");
+const { Post } = require("../../models");
 
 exports.hasText = (type) => (req, res, next) => {
   const { content } = req.body;
@@ -59,4 +60,20 @@ exports.isImagesValid = (location) => (req, res, next) => {
 
 const checkImage = (ext) => {
   return ext === JPEG || ext === PNG || ext === JPG ? true : false;
+};
+
+exports.postsPagination = async (req, res, next) => {
+  const limit = req.query.limit;
+  const page = (req.query.page - 1) * limit;
+  const { id } = req.userParams;
+
+  const data = await Post.findAndCountAll({
+    where: { userId: id },
+    limit,
+    offset: page,
+  });
+
+  res.posts = { data: data.rows, count: data.count };
+
+  next();
 };
