@@ -3,13 +3,18 @@ const {
   createTextPost,
   createImagePost,
   createImagesPost,
+  getUserPosts,
 } = require("../controllers/postController");
 const {
   hasText,
   isImageValid,
   isImagesValid,
+  postsPagination,
 } = require("../middlewares/postMiddlewares");
-const { authenticate } = require("../middlewares/userMiddleware");
+const {
+  authenticate,
+  checkIfUsernameExist,
+} = require("../middlewares/userMiddleware");
 const { TEXT } = require("../utils/constant");
 const Image = require("../utils/images");
 
@@ -39,6 +44,12 @@ routes.post(
   "/create-new-post/images",
   [authenticate, upload("array"), isImagesValid("images/posts/")],
   createImagesPost
+);
+
+routes.get(
+  "/:username/posts",
+  [authenticate, checkIfUsernameExist, postsPagination],
+  getUserPosts
 );
 
 module.exports = routes;
