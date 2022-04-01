@@ -70,3 +70,34 @@ exports.createImagesPost = async (req, res) => {
     return res.status(status).send({ msg });
   }
 };
+
+exports.getUserPosts = async (req, res) => {
+  const page = req.query.page;
+  const limit = req.query.limit;
+  const { first_name } = req.userParams;
+  const { data, count } = res.posts;
+
+  try {
+    const posts = await Promise.all(
+      data.map(async (post) => {
+        console.log("Posts: ", post);
+        const imagePosts = await ImagePost.findAll({
+          where: { postId: post.id },
+        });
+        post["dataValues"]["ImagePost"] = imagePosts;
+        return post;
+      })
+    );
+
+    const info = { page, limit, count };
+
+    return res.status(200).send({
+      msg: `${first_name}'s Posts.`,
+      info,
+      posts,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "Something went wrong." });
+  }
+};
