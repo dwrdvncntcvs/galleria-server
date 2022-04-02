@@ -2,6 +2,7 @@ const { sequelize, User, Profile, Avatar } = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { sign } = require("jsonwebtoken");
 const { SECRET_KEY } = require("../utils/constant");
+const verify = require("jsonwebtoken/verify");
 
 exports.createNewUser = async (req, res) => {
   const { first_name, last_name, username, email, password } = req.body;
@@ -27,9 +28,9 @@ exports.createNewUser = async (req, res) => {
 };
 
 exports.signIn = (req, res) => {
-  const { id, username } = req.currentUser;
+  const { id, email } = req.currentUser;
 
-  const payload = { id, username };
+  const payload = { id, email };
   const token = sign(payload, SECRET_KEY);
 
   return res.status(200).send({ token });
@@ -53,7 +54,7 @@ exports.userProfile = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-  const id = req.params.id;
+  const id = req.query.userId;
   const { first_name, last_name, username, bio } = req.body;
 
   const t = await sequelize.transaction();
@@ -79,7 +80,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const id = req.params.id;
+  const id = req.query.userId;
 
   const t = await sequelize.transaction();
   try {
