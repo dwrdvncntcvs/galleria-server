@@ -35,8 +35,8 @@ exports.authenticate = (req, res, next) => {
   verify(token, SECRET_KEY, async (err, payload) => {
     if (err) return res.status(403).send({ msg: "Sign in first." });
 
-    const { id, username } = payload;
-    const user = await User.findOne({ where: { id, username } });
+    const { id, email } = payload;
+    const user = await User.findOne({ where: { id, email } });
     req.user = user;
     next();
   });
@@ -53,7 +53,8 @@ exports.checkIfUsernameExist = async (req, res, next) => {
 };
 
 exports.canEdit = async (req, res, next) => {
-  const id = req.params.id;
+  const id = req.query.userId;
+  console.log("ID: ", id);
   const currentUser = req.user;
 
   if (!isUuidValid(id)) return res.status(404).send({ msg: "User not found." });
