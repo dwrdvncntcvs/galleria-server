@@ -45,5 +45,9 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "posts",
     }
   );
+  Post.findPostById = async (id) => {
+    return await Post.findOne({ where: { id } });
+  };
+
   return Post;
 };
