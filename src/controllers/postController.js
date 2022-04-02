@@ -101,3 +101,24 @@ exports.getUserPosts = async (req, res) => {
     return res.status(500).send({ msg: "Something went wrong." });
   }
 };
+
+exports.updatePostContent = async (req, res) => {
+  const postId = req.query.postId;
+  const { content } = req.body;
+
+  const t = await sequelize.transaction();
+  try {
+    await Post.update(
+      { content },
+      { where: { id: postId } },
+      { transaction: t }
+    );
+    await t.commit();
+
+    return res.status(200).send({ msg: "Post Updated." });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    return res.status(500).send({ msg: "Something went wrong." });
+  }
+};
