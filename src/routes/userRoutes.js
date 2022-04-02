@@ -20,11 +20,7 @@ routes.post("/sign-up", createNewUser);
 
 routes.post("/sign-in", [checkIfEmailExists, validatePassword], signIn);
 
-routes.get(
-  "/profile/:username",
-  [ checkIfUsernameExist],
-  userProfile
-);
+routes.get("/profile/:username", [checkIfUsernameExist], userProfile);
 
 routes.put("/update/profile", [authenticate, canEdit], updateProfile);
 
