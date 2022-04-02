@@ -4,16 +4,19 @@ const {
   createImagePost,
   createImagesPost,
   getUserPosts,
+  updatePostContent,
 } = require("../controllers/postController");
 const {
   hasText,
   isImageValid,
   isImagesValid,
-  postsPagination,
+  checkPostIfExist,
+  userPostsPagination,
 } = require("../middlewares/postMiddlewares");
 const {
   authenticate,
   checkIfUsernameExist,
+  canEdit,
 } = require("../middlewares/userMiddleware");
 const { TEXT } = require("../utils/constant");
 const Image = require("../utils/images");
@@ -47,9 +50,15 @@ routes.post(
 );
 
 routes.get(
-  "/:username/posts",
-  [authenticate, checkIfUsernameExist, postsPagination],
+  "/posts/:username",
+  [checkIfUsernameExist, userPostsPagination],
   getUserPosts
+);
+
+routes.put(
+  "/user/post",
+  [authenticate, canEdit, checkPostIfExist],
+  updatePostContent
 );
 
 module.exports = routes;
