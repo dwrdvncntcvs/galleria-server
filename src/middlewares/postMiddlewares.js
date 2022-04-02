@@ -1,6 +1,7 @@
 const { TEXT, IMAGE, JPEG, JPG, PNG } = require("../utils/constant");
 const fs = require("fs");
 const { Post } = require("../../models");
+const { isUuidValid } = require("../utils/validation");
 
 exports.hasText = (type) => (req, res, next) => {
   const { content } = req.body;
@@ -62,7 +63,7 @@ const checkImage = (ext) => {
   return ext === JPEG || ext === PNG || ext === JPG ? true : false;
 };
 
-exports.postsPagination = async (req, res, next) => {
+exports.userPostsPagination = async (req, res, next) => {
   const limit = req.query.limit;
   const page = (req.query.page - 1) * limit;
   const { id } = req.userParams;
@@ -71,9 +72,23 @@ exports.postsPagination = async (req, res, next) => {
     where: { userId: id },
     limit,
     offset: page,
+    order: [["createdAt", "DESC"]],
   });
 
   res.posts = { data: data.rows, count: data.count };
+
+  next();
+};
+
+exports.checkPostIfExist = async (req, res, next) => {
+  const postId = req.query.postId;
+
+  if (!isUuidValid(postId))
+    return res.status(404).send({ msg: "Post not found." });
+
+  const post = await Post.findPostById(postId);
+
+  if (!post) return res.status(404).send({ msg: "Post not found." });
 
   next();
 };
