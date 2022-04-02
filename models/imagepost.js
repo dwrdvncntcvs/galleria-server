@@ -51,5 +51,15 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "imagePosts",
     }
   );
+
+  ImagePost.getPostsImages = async (data) => {
+    return data.map(async (post) => {
+      const imagePosts = await ImagePost.findAll({
+        where: { postId: post.id },
+      });
+      post["dataValues"]["ImagePost"] = imagePosts;
+      return post;
+    });
+  };
   return ImagePost;
 };
