@@ -1,4 +1,9 @@
-const { sequelize, Post, ImagePost } = require("../../models");
+const {
+  sequelize,
+  Post,
+  ImagePost,
+  Follower,
+} = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { addKey } = require("../utils/helper");
 
@@ -78,17 +83,7 @@ exports.getUserPosts = async (req, res) => {
   const { data, count } = res.posts;
 
   try {
-    const posts = await Promise.all(
-      data.map(async (post) => {
-        console.log("Posts: ", post);
-        const imagePosts = await ImagePost.findAll({
-          where: { postId: post.id },
-        });
-        post["dataValues"]["ImagePost"] = imagePosts;
-        return post;
-      })
-    );
-
+    const posts = await Promise.all(await ImagePost.getPostsImages(data));
     const info = { page, limit, count };
 
     return res.status(200).send({
@@ -120,5 +115,36 @@ exports.updatePostContent = async (req, res) => {
     console.log(err);
     await t.rollback();
     return res.status(500).send({ msg: "Something went wrong." });
+  }
+};
+
+exports.getAllPosts = async (req, res) => {
+  const limit = req.query.limit;
+  const page = (req.query.page - 1) * limit;
+  const userId = req.query.id;
+
+  try {
+    console.log("User Id: ", userId);
+    let user;
+    if (userId) {
+      const { userData } = await Follower.getFollowing(userId);
+      user = userData;
+    }
+
+    const data = await Post.findAllPosts({
+      userId,
+      userData: user,
+      limit,
+      page,
+    });
+
+    const posts = await Promise.all(await ImagePost.getPostsImages(data));
+
+    return res.status(200).send({ msg: "All Posts.", posts });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .send({ msg: "Something went wrong.", error: err.message });
   }
 };
