@@ -5,6 +5,7 @@ const {
   createImagesPost,
   getUserPosts,
   updatePostContent,
+  getAllPosts,
 } = require("../controllers/postController");
 const {
   hasText,
@@ -17,6 +18,7 @@ const {
   authenticate,
   checkIfUsernameExist,
   canEdit,
+  checkUserId,
 } = require("../middlewares/userMiddleware");
 const { TEXT } = require("../utils/constant");
 const Image = require("../utils/images");
@@ -54,6 +56,8 @@ routes.get(
   [checkIfUsernameExist, userPostsPagination],
   getUserPosts
 );
+
+routes.get("/posts", [checkUserId], getAllPosts);
 
 routes.put(
   "/user/post",
