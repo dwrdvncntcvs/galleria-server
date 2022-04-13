@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const { Op } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     /**
@@ -47,6 +49,61 @@ module.exports = (sequelize, DataTypes) => {
   );
   Post.findPostById = async (id) => {
     return await Post.findOne({ where: { id } });
+  };
+
+  Post.findAllPosts = async ({ userId, userData, limit = 0, page }) => {
+    const { User, Avatar } = require("../models");
+    
+    const paramObj = userId
+      ? {
+          where: { userId: { [Op.or]: [...getUserId(userData), userId] } },
+          limit,
+          offset: page,
+          order: [["createdAt", "DESC"]],
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: ["password", "email", "createdAt", "updatedAt"],
+              },
+              include: [
+                {
+                  model: Avatar,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                  },
+                },
+              ],
+            },
+          ],
+        }
+      : {
+          limit,
+          offset: page,
+          order: [["createdAt", "DESC"]],
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: ["password", "email", "createdAt", "updatedAt"],
+              },
+              include: [
+                {
+                  model: Avatar,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                  },
+                },
+              ],
+            },
+          ],
+        };
+
+    return await Post.findAll(paramObj);
+  };
+
+  const getUserId = (userData = []) => {
+    return userData.map((user) => user.id);
   };
 
   return Post;
