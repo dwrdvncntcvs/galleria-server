@@ -1,5 +1,6 @@
 module.exports = {
-  SECRET_KEY: process.env.SECRET_KEY,
+  ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
   TEXT: "text",
   IMAGE: "image",
   JPG: "jpg",
