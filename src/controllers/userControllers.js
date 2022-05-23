@@ -1,5 +1,6 @@
 const { sequelize, User, Profile, Avatar, Refresher } = require("../../models");
 const { errorMessage } = require("../utils/error");
+const { sign, decode, verify } = require("jsonwebtoken");
 const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
@@ -116,3 +117,29 @@ exports.deleteUser = async (req, res) => {
     return res.status(500).send({ msg: "Something went wrong." });
   }
 };
+
+exports.tokenRefresher = async (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.status(403).send({ msg: "Forbidden" });
+  const refreshToken = req.cookies.jwt;
+  const { id } = decode(refreshToken);
+
+  const foundToken = await Refresher.findRefreshTokenByUserId(id);
+
+  if (foundToken.refreshToken === "")
+    return res.status(403).send({ msg: "Forbidden" });
+
+  verify(refreshToken, REFRESH_TOKEN_SECRET, (err, payload) => {
+    if (err || payload.id !== foundToken.userId)
+      return res.status(401).send({ msg: "Invalid Credentials" });
+
+    const dataObj = { id: payload.id, email: payload.email };
+
+    const accessToken = sign(dataObj, ACCESS_TOKEN_SECRET, {
+      expiresIn: "500s",
+    });
+
+    return res.status(200).send({ accessToken });
+  });
+};
+
