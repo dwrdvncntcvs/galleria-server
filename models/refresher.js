@@ -35,5 +35,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  Refresher.findRefreshTokenByUserId = async (id) => {
+    return await Refresher.findOne({ where: { userId: id } });
+  };
+
   return Refresher;
 };
