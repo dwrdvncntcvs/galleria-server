@@ -1,6 +1,6 @@
 const { User } = require("../../models");
 const { verify } = require("jsonwebtoken");
-const { SECRET_KEY } = require("../utils/constant");
+const { ACCESS_TOKEN_SECRET } = require("../utils/constant");
 const { isUuidValid } = require("../utils/validation");
 
 exports.checkIfEmailExists = async (req, res, next) => {
@@ -32,7 +32,7 @@ exports.authenticate = (req, res, next) => {
   if (!authorization) return res.status(403).send({ msg: "Sign in first." });
 
   const token = authorization.replace("Bearer ", "");
-  verify(token, SECRET_KEY, async (err, payload) => {
+  verify(token, ACCESS_TOKEN_SECRET, async (err, payload) => {
     if (err) return res.status(403).send({ msg: "Sign in first." });
 
     const { id, email } = payload;
