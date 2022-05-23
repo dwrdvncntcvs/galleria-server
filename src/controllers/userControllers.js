@@ -1,8 +1,9 @@
 const { sequelize, User, Profile, Avatar, Refresher } = require("../../models");
 const { errorMessage } = require("../utils/error");
-const { sign } = require("jsonwebtoken");
-const { SECRET_KEY } = require("../utils/constant");
-const verify = require("jsonwebtoken/verify");
+const {
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+} = require("../utils/constant");
 
 exports.createNewUser = async (req, res) => {
   const { first_name, last_name, username, email, password } = req.body;
@@ -32,13 +33,30 @@ exports.createNewUser = async (req, res) => {
   }
 };
 
-exports.signIn = (req, res) => {
+exports.signIn = async (req, res) => {
   const { id, email } = req.currentUser;
 
   const payload = { id, email };
-  const token = sign(payload, SECRET_KEY);
+  const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "500s" });
+  const refreshToken = sign(payload, REFRESH_TOKEN_SECRET, {
+    expiresIn: "365d",
+  });
 
-  return res.status(200).send({ token });
+  const t = await sequelize.transaction();
+
+  await Refresher.update(
+    { refreshToken },
+    { where: { userId: id } },
+    { transaction: t }
+  );
+  await t.commit();
+
+  res.cookie("jwt", refreshToken, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+
+  return res.status(200).send({ accessToken });
 };
 
 exports.userProfile = async (req, res) => {
