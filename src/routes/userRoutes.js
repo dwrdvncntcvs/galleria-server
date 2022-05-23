@@ -6,6 +6,7 @@ const {
   updateProfile,
   deleteUser,
   tokenRefresher,
+  signOut,
 } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
@@ -28,5 +29,7 @@ routes.put("/update/profile", [authenticate, canEdit], updateProfile);
 routes.delete("/delete/user", [authenticate, canEdit], deleteUser);
 
 routes.get("/refresh", tokenRefresher);
+
+routes.get("/sign-out", signOut);
 
 module.exports = routes;
