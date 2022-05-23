@@ -143,3 +143,37 @@ exports.tokenRefresher = async (req, res) => {
   });
 };
 
+exports.signOut = async (req, res) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) {
+    res.clearCookie("jwt", { httpOnly: true });
+    return res.status(200).send({ msg: "Sign out successfully." });
+  }
+
+  const refreshToken = cookies.jwt;
+
+  try {
+    const t = await sequelize.transaction();
+
+    const foundToken = await Refresher.findRefreshToken(refreshToken);
+    if (!foundToken) {
+      res.clearCookie("jwt", { httpOnly: true });
+      return res.status(200).send({ msg: "Sign out successfully." });
+    }
+
+    await Refresher.update(
+      { refreshToken: "" },
+      { where: { id: foundToken.id } },
+      { transaction: t }
+    );
+
+    await t.commit();
+    res.clearCookie("jwt", { httpOnly: true });
+    return res.status(200).send({ msg: "Sign out successfully." });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    return res.status(500).send({ msg: "Something went wrong" });
+  }
+};
