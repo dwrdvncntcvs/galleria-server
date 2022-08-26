@@ -7,6 +7,7 @@ const {
   avatarRoutes,
   followerRoutes,
   postRoutes,
+  commentRoutes,
 } = require("./routes");
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(userRoutes);
 app.use(avatarRoutes);
 app.use(followerRoutes);
 app.use(postRoutes);
+app.use(commentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
