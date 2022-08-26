@@ -33,20 +33,16 @@ const upload = (type) => {
 
 const routes = express.Router();
 
-routes.post(
-  "/create-new-post/text",
-  [authenticate, hasText(TEXT)],
-  createTextPost
-);
+routes.post("/text", [authenticate, hasText(TEXT)], createTextPost);
 
 routes.post(
-  "/create-new-post/image",
+  "/image",
   [authenticate, upload("single"), isImageValid("images/posts")],
   createImagePost
 );
 
 routes.post(
-  "/create-new-post/images",
+  "/images",
   [authenticate, upload("array"), isImagesValid("images/posts/")],
   createImagesPost
 );
@@ -60,7 +56,7 @@ routes.get(
 routes.get("/posts", [checkUserId], getAllPosts);
 
 routes.put(
-  "/user/post",
+  "/:userId/:postId",
   [authenticate, canEdit, checkPostIfExist],
   updatePostContent
 );

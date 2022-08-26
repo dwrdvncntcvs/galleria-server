@@ -22,7 +22,7 @@ app.use("/images/avatars", express.static("images/avatars"));
 app.use("/user", userRoutes);
 app.use("/avatar", avatarRoutes);
 app.use(followerRoutes);
-app.use(postRoutes);
+app.use("/post", postRoutes);
 app.use(commentRoutes);
 
 app.listen(PORT, () => {

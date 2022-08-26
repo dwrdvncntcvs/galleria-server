@@ -81,7 +81,7 @@ exports.userPostsPagination = async (req, res, next) => {
 };
 
 exports.checkPostIfExist = async (req, res, next) => {
-  const postId = req.query.postId;
+  const { postId } = req.params;
 
   if (!isUuidValid(postId))
     return res.status(404).send({ msg: "Post not found." });
