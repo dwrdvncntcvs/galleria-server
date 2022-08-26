@@ -118,6 +118,8 @@ exports.tokenRefresher = async (req, res) => {
 
   const foundToken = await User.getRefreshTokenByUserId(id);
 
+  if (!foundToken) return res.status(404).send({ msg: "User Not Found" });
+
   if (foundToken.refreshToken === "")
     return res.status(403).send({ msg: "Forbidden" });
 
