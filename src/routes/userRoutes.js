@@ -24,9 +24,9 @@ routes.post("/sign-in", [checkIfEmailExists, validatePassword], signIn);
 
 routes.get("/profile/:username", [checkIfUsernameExist], userProfile);
 
-routes.put("/update/profile", [authenticate, canEdit], updateProfile);
+routes.put("/update/profile/:userId", [authenticate, canEdit], updateProfile);
 
-routes.delete("/delete/user", [authenticate, canEdit], deleteUser);
+routes.delete("/:userId", [authenticate, canEdit], deleteUser);
 
 routes.get("/refresh", tokenRefresher);
 

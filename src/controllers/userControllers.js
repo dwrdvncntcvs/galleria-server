@@ -104,7 +104,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const id = req.query.userId;
+  const id = req.params.userId;
 
   const t = await sequelize.transaction();
   try {
