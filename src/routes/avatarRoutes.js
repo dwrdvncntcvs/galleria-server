@@ -3,21 +3,11 @@ const {
   uploadAvatar,
   removeAvatar,
 } = require("../controllers/avatarControllers");
-const {
-  checkIfAvatarExist,
-  removeAvatarImage,
-} = require("../middlewares/avatarMiddlewares");
-const { isImageValid } = require("../middlewares/postMiddlewares");
+const { removeAvatarImage } = require("../middlewares/avatarMiddlewares");
 const { authenticate, canEdit } = require("../middlewares/userMiddleware");
 const { ImageService } = require("../services/imageServices");
 
 const routes = express.Router();
-
-// const upload = new Image({
-//   path: "images/avatars",
-//   name: "avatar",
-//   uploadType: "single",
-// }).upload();
 
 const { upload } = new ImageService({
   storageType: process.env.M_S_TYPE,
@@ -26,13 +16,7 @@ const { upload } = new ImageService({
 
 routes.post(
   "/:userId",
-  [
-    authenticate,
-    canEdit,
-    upload("single"),
-    isImageValid("images/avatars"),
-    checkIfAvatarExist,
-  ],
+  [authenticate, canEdit, upload("single")],
   uploadAvatar
 );
 
