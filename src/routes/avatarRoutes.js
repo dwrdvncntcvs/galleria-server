@@ -9,8 +9,7 @@ const {
 } = require("../middlewares/avatarMiddlewares");
 const { isImageValid } = require("../middlewares/postMiddlewares");
 const { authenticate, canEdit } = require("../middlewares/userMiddleware");
-const { ImageService, S_TYPE } = require("../services/imageServices");
-const Image = require("../utils/images");
+const { ImageService } = require("../services/imageServices");
 
 const routes = express.Router();
 
@@ -21,7 +20,7 @@ const routes = express.Router();
 // }).upload();
 
 const { upload } = new ImageService({
-  storageType: S_TYPE.MEMORY,
+  storageType: process.env.M_S_TYPE,
   name: "avatar",
 });
 

@@ -7,7 +7,7 @@ const S_TYPE = {
 
 class ImageService {
   constructor({ storageType, name }) {
-    this.storageType = storageType;
+    this.storageType = storageType.toLowerCase();
     this.name = name;
     this.storage = this.getStorage();
   }

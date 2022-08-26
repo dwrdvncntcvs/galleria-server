@@ -54,5 +54,17 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "profiles",
     }
   );
+
+  Profile.updateProfileImage = async (
+    { profileImage, userId },
+    transaction
+  ) => {
+    return await Profile.update(
+      { profileImage },
+      { where: { userId } },
+      { transaction }
+    );
+  };
+
   return Profile;
 };

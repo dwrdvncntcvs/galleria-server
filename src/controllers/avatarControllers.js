@@ -1,21 +1,21 @@
-const { sequelize, Avatar } = require("../../models");
+const { sequelize, Avatar, Profile } = require("../../models");
+const { uploadFileToFS } = require("../services/firebaseService");
 const { errorMessage } = require("../utils/error");
 
 exports.uploadAvatar = async (req, res) => {
-  const { filename, path, mimetype, size } = req.file;
+  const file = req.file;
   const { id } = req.user;
+  file["userId"] = id;
 
   const t = await sequelize.transaction();
   try {
-    // await Avatar.update(
-    //   { filename, path, mimetype, size },
-    //   { where: { userId: id } },
-    //   { transaction: t }
-    // );
-    // await t.commit();
+    const imageUrl = await uploadFileToFS({ file });
+    await Profile.updateProfileImage({ profileImage: imageUrl, userId: id }, t);
+    await t.commit();
 
     return res.status(200).send({ msg: "Avatar Uploaded." });
   } catch (err) {
+    console.log(err);
     const { status, msg } = errorMessage(err);
     await t.rollback();
     return res.status(status).send({ msg });
