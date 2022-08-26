@@ -17,8 +17,6 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(Post, { foreignKey: "userId" });
 
-      this.hasOne(Refresher, { foreignKey: "userId" });
-
       this.hasMany(Comment, { foreignKey: "userId" });
     }
   }
@@ -130,5 +128,21 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  User.getRefreshTokenByUserId = async (userId) => {
+    return await User.findOne({ where: { id: userId } });
+    // return user;
+  };
+
+  User.getRefreshToken = async (token) => {
+    return await User.findOne({ where: { refreshToken: token } });
+  };
+
+  User.removeRefreshTokenByUserId = async ({ userId, transaction }) => {
+    return await User.update(
+      { refreshToken: "" },
+      { where: { id: userId } },
+      { transaction }
+    );
+  };
   return User;
 };

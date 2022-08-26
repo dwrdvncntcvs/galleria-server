@@ -116,13 +116,13 @@ exports.tokenRefresher = async (req, res) => {
   const refreshToken = req.cookies.jwt;
   const { id } = decode(refreshToken);
 
-  const foundToken = await Refresher.findRefreshTokenByUserId(id);
+  const foundToken = await User.getRefreshTokenByUserId(id);
 
   if (foundToken.refreshToken === "")
     return res.status(403).send({ msg: "Forbidden" });
 
   verify(refreshToken, REFRESH_TOKEN_SECRET, (err, payload) => {
-    if (err || payload.id !== foundToken.userId)
+    if (err || payload.id !== foundToken.id)
       return res.status(401).send({ msg: "Invalid Credentials" });
 
     const dataObj = { id: payload.id, email: payload.email };
@@ -148,17 +148,16 @@ exports.signOut = async (req, res) => {
   try {
     const t = await sequelize.transaction();
 
-    const foundToken = await Refresher.findRefreshToken(refreshToken);
+    const foundToken = await User.getRefreshToken(refreshToken);
     if (!foundToken) {
       res.clearCookie("jwt", { httpOnly: true });
       return res.status(200).send({ msg: "Sign out successfully." });
     }
 
-    await Refresher.update(
-      { refreshToken: "" },
-      { where: { id: foundToken.id } },
-      { transaction: t }
-    );
+    await User.removeRefreshTokenByUserId({
+      userId: foundToken.id,
+      transaction: t,
+    });
 
     await t.commit();
     res.clearCookie("jwt", { httpOnly: true });
