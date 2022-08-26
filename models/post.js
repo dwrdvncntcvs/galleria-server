@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ User, ImagePost }) {
+    static associate({ User, ImagePost, Comment }) {
       this.belongsTo(User, {
         foreignKey: { name: "userId", allowNull: false },
         onDelete: "cascade",
@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.hasOne(ImagePost, { foreignKey: "postId" });
+
+      this.hasMany(Comment, { foreignKey: "postId" });
     }
   }
   Post.init(
@@ -53,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Post.findAllPosts = async ({ userId, userData, limit = 0, page }) => {
     const { User, Avatar } = require("../models");
-    
+
     const paramObj = userId
       ? {
           where: { userId: { [Op.or]: [...getUserId(userData), userId] } },
