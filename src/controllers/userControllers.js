@@ -37,11 +37,11 @@ exports.signIn = async (req, res) => {
 
   const t = await sequelize.transaction();
 
-  await Refresher.update(
-    { refreshToken },
-    { where: { userId: id } },
-    { transaction: t }
-  );
+  await User.setRefreshToken({
+    token: refreshToken,
+    userId: id,
+    transaction: t,
+  });
   await t.commit();
 
   res.cookie("jwt", refreshToken, {

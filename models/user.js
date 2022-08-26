@@ -122,5 +122,13 @@ module.exports = (sequelize, DataTypes) => {
     return await User.findOne({ where: { id } });
   };
 
+  User.setRefreshToken = async ({ token, userId, transaction }) => {
+    return await User.update(
+      { refreshToken: token },
+      { where: { id: userId } },
+      { transaction }
+    );
+  };
+
   return User;
 };
