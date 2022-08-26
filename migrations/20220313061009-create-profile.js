@@ -12,6 +12,22 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      profileImage: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      contactNumber: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      dateOfBirth: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+      address: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,

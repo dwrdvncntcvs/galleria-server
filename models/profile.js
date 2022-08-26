@@ -27,6 +27,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      profileImage: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      contactNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      dateOfBirth: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
