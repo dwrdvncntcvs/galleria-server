@@ -27,14 +27,7 @@ exports.removeAvatar = async (req, res) => {
 
   const t = await sequelize.transaction();
   try {
-    console.log("ID: ", id);
     await Profile.removeProfileImage({ userId: id, transaction: t });
-
-    // await Avatar.update(
-    //   { filename: "", path: "", mimetype: "", size: "" },
-    //   { where: { userId: id } },
-    //   { transaction: t }
-    // );
     await t.commit();
 
     return res.status(200).send({ msg: "Avatar Deleted." });
