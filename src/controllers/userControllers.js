@@ -7,27 +7,19 @@ const {
 } = require("../utils/constant");
 
 exports.createNewUser = async (req, res) => {
-  const { first_name, last_name, username, email, password } = req.body;
-
   const t = await sequelize.transaction();
   try {
-    const user = await User.create(
-      { first_name, last_name, username, email, password },
-      { transaction: t }
-    );
+    const { id } = await User.createUser({
+      userData: req.body,
+      transaction: t,
+    });
+    await Profile.createDefaultProfile({ userId: id, transaction: t });
 
-    await Profile.create({ userId: user.id, bio: "" }, { transaction: t });
-
-    await Avatar.create({ userId: user.id }, { transaction: t });
-
-    await Refresher.create(
-      { userId: user.id, refreshToken: "" },
-      { transaction: t }
-    );
     await t.commit();
 
     return res.status(200).send({ msg: "Account created." });
   } catch (err) {
+    console.log(err);
     const { status, msg } = errorMessage(err);
     await t.rollback();
     return res.status(status).send({ msg });

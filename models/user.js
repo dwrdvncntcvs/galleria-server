@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      refreshToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,
@@ -92,6 +96,15 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
+
+  User.createUser = async ({ userData, transaction }) => {
+    const { first_name, last_name, username, email, password } = userData;
+
+    return await User.create(
+      { first_name, last_name, username, email, password, refreshToken: "" },
+      { transaction }
+    );
+  };
 
   User.findUserByEmail = async (email) => {
     return await User.findOne({ where: { email } });

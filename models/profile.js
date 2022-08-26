@@ -55,6 +55,21 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  Profile.createDefaultProfile = async ({ userId, transaction }) => {
+    console.log("Creating profile...");
+    return await Profile.create(
+      {
+        userId,
+        bio: "",
+        profileImage: "",
+        contactNumber: "",
+        dateOfBirth: null,
+        address: "",
+      },
+      { transaction }
+    );
+  };
+
   Profile.updateProfileImage = async (
     { profileImage, userId },
     transaction
