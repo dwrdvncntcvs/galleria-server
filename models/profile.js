@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { removeFileFromFS } = require("../src/services/firebaseService");
 module.exports = (sequelize, DataTypes) => {
   class Profile extends Model {
     /**
@@ -76,6 +77,18 @@ module.exports = (sequelize, DataTypes) => {
   ) => {
     return await Profile.update(
       { profileImage },
+      { where: { userId } },
+      { transaction }
+    );
+  };
+
+  Profile.removeProfileImage = async ({ userId, transaction }) => {
+    const { profileImage } = await Profile.findOne({ where: { userId } });
+
+    await removeFileFromFS({ profileImage });
+
+    return await Profile.update(
+      { profileImage: "" },
       { where: { userId } },
       { transaction }
     );

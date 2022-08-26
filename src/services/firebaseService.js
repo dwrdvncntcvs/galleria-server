@@ -1,9 +1,16 @@
 const { storage } = require("../utils/firebase-config");
-const { uploadBytes, ref, getDownloadURL } = require("firebase/storage");
+const {
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  deleteObject,
+} = require("firebase/storage");
 const path = require("path");
 
 const createStorage = (fieldname, filename) =>
   ref(storage, `${fieldname}/${filename}`);
+
+const createStorageFromUrl = (url) => ref(storage, url);
 
 const uploadFileToFS = async ({ file }) => {
   const { fieldname, mimetype, buffer, originalname, userId } = file;
@@ -12,11 +19,16 @@ const uploadFileToFS = async ({ file }) => {
   )}`;
 
   const _storage = createStorage(fieldname, filename);
-  console.log(_storage);
   await uploadBytes(_storage, buffer, { contentType: mimetype });
   return await getDownloadURL(_storage);
 };
 
+const removeFileFromFS = async ({ profileImage }) => {
+  const _storage = createStorageFromUrl(profileImage);
+  return await deleteObject(_storage);
+};
+
 module.exports = {
   uploadFileToFS,
+  removeFileFromFS,
 };

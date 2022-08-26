@@ -27,15 +27,19 @@ exports.removeAvatar = async (req, res) => {
 
   const t = await sequelize.transaction();
   try {
-    await Avatar.update(
-      { filename: "", path: "", mimetype: "", size: "" },
-      { where: { userId: id } },
-      { transaction: t }
-    );
+    console.log("ID: ", id);
+    await Profile.removeProfileImage({ userId: id, transaction: t });
+
+    // await Avatar.update(
+    //   { filename: "", path: "", mimetype: "", size: "" },
+    //   { where: { userId: id } },
+    //   { transaction: t }
+    // );
     await t.commit();
 
     return res.status(200).send({ msg: "Avatar Deleted." });
   } catch (err) {
+    console.log("ERROR: ", err);
     const { status, msg } = errorMessage(err);
     await t.rollback();
     return res.status(status).send({ msg });

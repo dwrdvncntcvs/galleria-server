@@ -20,10 +20,6 @@ routes.post(
   uploadAvatar
 );
 
-routes.delete(
-  "/:userId",
-  [authenticate, canEdit, removeAvatarImage],
-  removeAvatar
-);
+routes.delete("/:userId", [authenticate, canEdit], removeAvatar);
 
 module.exports = routes;
