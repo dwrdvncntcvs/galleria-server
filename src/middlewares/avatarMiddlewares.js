@@ -4,9 +4,9 @@ const fs = require("fs");
 const EMPTY = "";
 
 exports.checkIfAvatarExist = async (req, res, next) => {
-  const id = req.params.id;
+  const { userId } = req.params;
 
-  const avatar = await Avatar.findAvatarByUserId(id);
+  const avatar = await Avatar.findAvatarByUserId(userId);
   if (!avatar) return res.status(404).send({ msg: "Avatar not found." });
 
   const { filename, path, mimetype, size } = avatar;

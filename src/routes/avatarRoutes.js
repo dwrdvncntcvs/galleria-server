@@ -9,22 +9,28 @@ const {
 } = require("../middlewares/avatarMiddlewares");
 const { isImageValid } = require("../middlewares/postMiddlewares");
 const { authenticate, canEdit } = require("../middlewares/userMiddleware");
+const { ImageService, S_TYPE } = require("../services/imageServices");
 const Image = require("../utils/images");
 
 const routes = express.Router();
 
-const upload = new Image({
-  path: "images/avatars",
+// const upload = new Image({
+//   path: "images/avatars",
+//   name: "avatar",
+//   uploadType: "single",
+// }).upload();
+
+const { upload } = new ImageService({
+  storageType: S_TYPE.MEMORY,
   name: "avatar",
-  uploadType: "single",
-}).upload();
+});
 
 routes.post(
   "/:userId",
   [
     authenticate,
     canEdit,
-    upload,
+    upload("single"),
     isImageValid("images/avatars"),
     checkIfAvatarExist,
   ],

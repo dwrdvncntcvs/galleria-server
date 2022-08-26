@@ -7,12 +7,12 @@ exports.uploadAvatar = async (req, res) => {
 
   const t = await sequelize.transaction();
   try {
-    await Avatar.update(
-      { filename, path, mimetype, size },
-      { where: { userId: id } },
-      { transaction: t }
-    );
-    await t.commit();
+    // await Avatar.update(
+    //   { filename, path, mimetype, size },
+    //   { where: { userId: id } },
+    //   { transaction: t }
+    // );
+    // await t.commit();
 
     return res.status(200).send({ msg: "Avatar Uploaded." });
   } catch (err) {
