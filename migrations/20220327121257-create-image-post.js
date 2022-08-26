@@ -8,22 +8,26 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      filename: {
+      postImageUrl: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      path: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      mimetype: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      size: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+      // filename: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
+      // path: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
+      // mimetype: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
+      // size: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
       postId: {
         type: Sequelize.UUID,
         allowNull: false,
