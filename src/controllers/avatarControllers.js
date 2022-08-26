@@ -23,7 +23,7 @@ exports.uploadAvatar = async (req, res) => {
 };
 
 exports.removeAvatar = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.user;
 
   const t = await sequelize.transaction();
   try {

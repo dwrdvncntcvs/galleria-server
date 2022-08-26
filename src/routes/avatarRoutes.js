@@ -20,7 +20,7 @@ const upload = new Image({
 }).upload();
 
 routes.post(
-  "/add-avatar/:id",
+  "/:userId",
   [
     authenticate,
     canEdit,
@@ -32,7 +32,7 @@ routes.post(
 );
 
 routes.delete(
-  "/remove-avatar/user/:id",
+  "/:userId",
   [authenticate, canEdit, removeAvatarImage],
   removeAvatar
 );

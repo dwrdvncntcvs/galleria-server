@@ -20,7 +20,7 @@ app.use(express.json());
 app.use("/images/avatars", express.static("images/avatars"));
 
 app.use("/user", userRoutes);
-app.use(avatarRoutes);
+app.use("/avatar", avatarRoutes);
 app.use(followerRoutes);
 app.use(postRoutes);
 app.use(commentRoutes);
