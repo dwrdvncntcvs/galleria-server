@@ -5,7 +5,7 @@ const { errorMessage } = require("../utils/error");
 exports.uploadAvatar = async (req, res) => {
   const file = req.file;
   const { id } = req.user;
-  file["userId"] = id;
+  file["id"] = id;
 
   const t = await sequelize.transaction();
   try {

@@ -1,6 +1,7 @@
 const { sequelize, Post, ImagePost, Follower } = require("../../models");
+const { uploadFileToFS } = require("../services/firebaseService");
 const { errorMessage } = require("../utils/error");
-const { addKey } = require("../utils/helper");
+const { addKey, convertToArray, addIDKey } = require("../utils/helper");
 
 exports.createTextPost = async (req, res) => {
   const { content } = req.body;
@@ -23,7 +24,6 @@ exports.createTextPost = async (req, res) => {
 exports.createImagePost = async (req, res) => {
   const { content } = req.body;
   const user = req.user;
-  const { filename, path, mimetype, size } = req.file;
 
   const t = await sequelize.transaction();
   try {
@@ -32,8 +32,10 @@ exports.createImagePost = async (req, res) => {
       { transaction: t }
     );
 
+    const file = addIDKey(req.file, post.id, "id");
+
     await ImagePost.createAndUploadImage({
-      imageData: req.file,
+      imageData: file,
       postId: post.id,
       transaction: t,
     });
@@ -50,7 +52,6 @@ exports.createImagePost = async (req, res) => {
 
 exports.createImagesPost = async (req, res) => {
   const { content } = req.body;
-  const files = req.filesArr;
   const user = req.user;
 
   const t = await sequelize.transaction();
@@ -59,10 +60,14 @@ exports.createImagesPost = async (req, res) => {
       { content, userId: user.id },
       { transaction: t }
     );
+    const files = addKey(req.files, post.id, "id");
 
-    const filesArr = addKey(files, post.id, "postId");
+    await ImagePost.uploadMultipleImages({
+      imageArr: files,
+      postId: post.id,
+      transaction: t,
+    });
 
-    await ImagePost.bulkCreate(filesArr, { transaction: t });
     await t.commit();
 
     return res.status(200).send({ msg: "Images Posted." });

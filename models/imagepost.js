@@ -89,5 +89,20 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   };
+
+  ImagePost.uploadMultipleImages = async ({
+    imageArr,
+    postId,
+    transaction,
+  }) => {
+    const imageUrls = await uploadFileToFS({ file: imageArr });
+
+    const imagePostArr = addDataToImagePost(imageUrls, postId);
+    return await ImagePost.bulkCreate(imagePostArr, { transaction });
+  };
+
+  const addDataToImagePost = (imageUrls, postId) => {
+    return imageUrls.map((imageUrl) => ({ postImageUrl: imageUrl, postId }));
+  };
   return ImagePost;
 };

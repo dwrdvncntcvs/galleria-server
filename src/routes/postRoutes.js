@@ -9,8 +9,6 @@ const {
 } = require("../controllers/postController");
 const {
   hasText,
-  isImageValid,
-  isImagesValid,
   checkPostIfExist,
   userPostsPagination,
 } = require("../middlewares/postMiddlewares");
@@ -22,15 +20,6 @@ const {
 } = require("../middlewares/userMiddleware");
 const { ImageService } = require("../services/imageServices");
 const { TEXT } = require("../utils/constant");
-const Image = require("../utils/images");
-
-// const upload = (type) => {
-//   return new Image({
-//     path: "images/posts",
-//     name: "imagePost",
-//     uploadType: type,
-//   }).upload();
-// };
 
 const { upload } = new ImageService({
   storageType: process.env.M_S_TYPE,
@@ -43,11 +32,7 @@ routes.post("/text", [authenticate, hasText(TEXT)], createTextPost);
 
 routes.post("/image", [authenticate, upload("single")], createImagePost);
 
-// routes.post(
-//   "/images",
-//   [authenticate, upload("array"), isImagesValid("images/posts/")],
-//   createImagesPost
-// );
+routes.post("/images", [authenticate, upload("array")], createImagesPost);
 
 routes.get(
   "/posts/:username",
