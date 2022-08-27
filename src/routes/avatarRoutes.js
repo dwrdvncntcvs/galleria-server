@@ -3,7 +3,6 @@ const {
   uploadAvatar,
   removeAvatar,
 } = require("../controllers/avatarControllers");
-const { removeAvatarImage } = require("../middlewares/avatarMiddlewares");
 const { authenticate, canEdit } = require("../middlewares/userMiddleware");
 const { ImageService } = require("../services/imageServices");
 
