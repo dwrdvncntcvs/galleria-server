@@ -32,22 +32,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      // filename: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
-      // path: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
-      // mimetype: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
-      // size: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
       postId: {
         type: DataTypes.UUID,
         allowNull: false,
