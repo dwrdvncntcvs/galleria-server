@@ -20,32 +20,34 @@ const {
   canEdit,
   checkUserId,
 } = require("../middlewares/userMiddleware");
+const { ImageService } = require("../services/imageServices");
 const { TEXT } = require("../utils/constant");
 const Image = require("../utils/images");
 
-const upload = (type) => {
-  return new Image({
-    path: "images/posts",
-    name: "imagePost",
-    uploadType: type,
-  }).upload();
-};
+// const upload = (type) => {
+//   return new Image({
+//     path: "images/posts",
+//     name: "imagePost",
+//     uploadType: type,
+//   }).upload();
+// };
+
+const { upload } = new ImageService({
+  storageType: process.env.M_S_TYPE,
+  name: "image-post",
+});
 
 const routes = express.Router();
 
 routes.post("/text", [authenticate, hasText(TEXT)], createTextPost);
 
-routes.post(
-  "/image",
-  [authenticate, upload("single"), isImageValid("images/posts")],
-  createImagePost
-);
+routes.post("/image", [authenticate, upload("single")], createImagePost);
 
-routes.post(
-  "/images",
-  [authenticate, upload("array"), isImagesValid("images/posts/")],
-  createImagesPost
-);
+// routes.post(
+//   "/images",
+//   [authenticate, upload("array"), isImagesValid("images/posts/")],
+//   createImagesPost
+// );
 
 routes.get(
   "/posts/:username",

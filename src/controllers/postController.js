@@ -1,9 +1,4 @@
-const {
-  sequelize,
-  Post,
-  ImagePost,
-  Follower,
-} = require("../../models");
+const { sequelize, Post, ImagePost, Follower } = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { addKey } = require("../utils/helper");
 
@@ -36,14 +31,17 @@ exports.createImagePost = async (req, res) => {
       { content, userId: user.id },
       { transaction: t }
     );
-    await ImagePost.create(
-      { filename, path, mimetype, size, postId: post.id },
-      { transaction: t }
-    );
+
+    await ImagePost.createAndUploadImage({
+      imageData: req.file,
+      postId: post.id,
+      transaction: t,
+    });
     await t.commit();
 
     return res.status(200).send({ msg: "Posted." });
   } catch (err) {
+    console.log(err);
     const { status, msg } = errorMessage(err);
     await t.rollback();
     return res.status(status).send({ msg });

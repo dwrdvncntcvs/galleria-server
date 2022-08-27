@@ -1,5 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
+const {
+  uploadFileToFS,
+  removeFileFromFS,
+} = require("../src/services/firebaseService");
 module.exports = (sequelize, DataTypes) => {
   class ImagePost extends Model {
     /**
@@ -64,6 +68,26 @@ module.exports = (sequelize, DataTypes) => {
       post["dataValues"]["ImagePost"] = imagePosts;
       return post;
     });
+  };
+
+  ImagePost.createAndUploadImage = async ({
+    imageData,
+    postId,
+    transaction,
+  }) => {
+    const imageUrl = await uploadFileToFS({ file: imageData });
+
+    try {
+      return await ImagePost.create(
+        { postImageUrl: imageUrl, postId },
+        { transaction }
+      );
+    } catch (err) {
+      if (err) {
+        await removeFileFromFS({ imageUrl });
+        return new Error("Error saving image to database.");
+      }
+    }
   };
   return ImagePost;
 };

@@ -23,8 +23,8 @@ const uploadFileToFS = async ({ file }) => {
   return await getDownloadURL(_storage);
 };
 
-const removeFileFromFS = async ({ profileImage }) => {
-  const _storage = createStorageFromUrl(profileImage);
+const removeFileFromFS = async ({ imageUrl }) => {
+  const _storage = createStorageFromUrl(imageUrl);
   return await deleteObject(_storage);
 };
 

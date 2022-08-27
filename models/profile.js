@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
   Profile.removeProfileImage = async ({ userId, transaction }) => {
     const { profileImage } = await Profile.findOne({ where: { userId } });
 
-    await removeFileFromFS({ profileImage });
+    await removeFileFromFS({ imageUrl: profileImage });
 
     return await Profile.update(
       { profileImage: "" },
