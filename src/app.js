@@ -25,6 +25,10 @@ app.use(followerRoutes);
 app.use("/post", postRoutes);
 app.use(commentRoutes);
 
+app.use((error, req, res, next) => {
+  return res.status(500).send({ msg: error.message });
+});
+
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
   sequelize.authenticate();
