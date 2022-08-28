@@ -85,3 +85,21 @@ exports.updateComment = async (req, res) => {
       .send({ msg: "Something went wrong.", err: err.message });
   }
 };
+
+exports.removeComment = async (req, res) => {
+  const comment = req.commentData;
+
+  const t = await sequelize.transaction();
+  try {
+    await Comment.deleteComment({ commentId: comment.id, transaction: t });
+    await t.commit();
+
+    return res.status(200).send({ msg: "Comment deleted." });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    return res
+      .status(500)
+      .send({ msg: "Something went wrong.", err: err.message });
+  }
+};

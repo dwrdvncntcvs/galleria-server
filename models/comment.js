@@ -128,5 +128,9 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  Comment.deleteComment = async ({ commentId, transaction }) => {
+    return await Comment.destroy({ where: { id: commentId } }, { transaction });
+  };
+
   return Comment;
 };

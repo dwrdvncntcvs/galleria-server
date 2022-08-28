@@ -4,6 +4,7 @@ const {
   getComments,
   createImageComment,
   updateComment,
+  removeComment,
 } = require("../controllers/commentControllers");
 const {
   checkIfCommentExists,
@@ -38,6 +39,12 @@ route.put(
   "/:commentId",
   [authenticate, checkIfCommentExists, canEditComment],
   updateComment
+);
+
+route.delete(
+  "/:commentId",
+  [authenticate, checkIfCommentExists, canEditComment],
+  removeComment
 );
 
 module.exports = route;
