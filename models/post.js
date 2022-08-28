@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const { Op } = require("sequelize");
+const { removeFileFromFS } = require("../src/services/firebaseService");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
@@ -106,6 +107,18 @@ module.exports = (sequelize, DataTypes) => {
 
   const getUserId = (userData = []) => {
     return userData.map((user) => user.id);
+  };
+
+  Post.removePost = async ({ post, transaction }) => {
+    const { ImagePost } = require("../models");
+    const response = await ImagePost.findAll({ where: { postId: post.id } });
+
+    await Post.destroy({ where: { id: post.id } }, { transaction });
+
+    for (let image of response) {
+      await removeFileFromFS({ imageUrl: image.postImageUrl });
+    }
+    return;
   };
 
   return Post;

@@ -92,3 +92,18 @@ exports.checkPostIfExist = async (req, res, next) => {
 
   next();
 };
+
+exports.canEditPost = async (req, res, next) => {
+  const { postId } = req.params;
+  const { id } = req.user;
+
+  if (!isUuidValid(postId))
+    return res.status(404).send({ msg: "Post not found." });
+
+  const post = await Post.findOne({ where: { userId: id, id: postId } });
+
+  if (!post) return res.status(404).send({ msg: "Post not found." });
+
+  req.post = post;
+  next();
+};

@@ -63,7 +63,9 @@ exports.canEdit = async (req, res, next) => {
   if (!user) return res.status(404).send({ msg: "User not found." });
 
   if (currentUser.id !== userId)
-    return res.status(403).send({ msg: "You have no access to this profile." });
+    return res
+      .status(403)
+      .send({ msg: "You have no permission to make changes." });
 
   next();
 };

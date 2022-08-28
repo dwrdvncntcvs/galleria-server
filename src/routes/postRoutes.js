@@ -6,16 +6,17 @@ const {
   getUserPosts,
   updatePostContent,
   getAllPosts,
+  deletePost,
 } = require("../controllers/postController");
 const {
   hasText,
   checkPostIfExist,
   userPostsPagination,
+  canEditPost,
 } = require("../middlewares/postMiddlewares");
 const {
   authenticate,
   checkIfUsernameExist,
-  canEdit,
   checkUserId,
 } = require("../middlewares/userMiddleware");
 const { ImageService } = require("../services/imageServices");
@@ -43,9 +44,11 @@ routes.get(
 routes.get("/posts", [checkUserId], getAllPosts);
 
 routes.put(
-  "/:userId/:postId",
-  [authenticate, canEdit, checkPostIfExist],
+  "/:postId",
+  [authenticate, canEditPost, checkPostIfExist],
   updatePostContent
 );
+
+routes.delete("/:postId", [authenticate, canEditPost], deletePost);
 
 module.exports = routes;

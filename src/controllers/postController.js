@@ -9,7 +9,10 @@ exports.createTextPost = async (req, res) => {
 
   const t = await sequelize.transaction();
   try {
-    await Post.create({ content, userId: user.id }, { transaction: t });
+    await Post.create(
+      { content, withImage: false, userId: user.id },
+      { transaction: t }
+    );
     await t.commit();
 
     return res.status(200).send({ msg: "Posted." });
@@ -28,7 +31,7 @@ exports.createImagePost = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const post = await Post.create(
-      { content, userId: user.id },
+      { content, withImage: true, userId: user.id },
       { transaction: t }
     );
 
@@ -57,7 +60,7 @@ exports.createImagesPost = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const post = await Post.create(
-      { content, userId: user.id },
+      { content, withImage: true, userId: user.id },
       { transaction: t }
     );
     const files = addKey(req.files, post.id, "id");
@@ -149,5 +152,18 @@ exports.getAllPosts = async (req, res) => {
     return res
       .status(500)
       .send({ msg: "Something went wrong.", error: err.message });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  const post = req.post;
+
+  const t = await sequelize.transaction();
+  try {
+    await Post.removePost({ post, transaction: t });
+
+    return res.status(200).send({ msg: "Post Deleted" });
+  } catch (err) {
+    return res.status(500).send({ msg: "Something went wrong.", err });
   }
 };
