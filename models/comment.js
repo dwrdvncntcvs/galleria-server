@@ -64,7 +64,44 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Comment.getAllCommentsByPostId = async ({ postId }) => {
-    return await Comment.findAll({ where: { postId } });
+    const { User, Profile } = require("../models");
+
+    return await Comment.findAll({
+      where: { postId },
+      attributes: { exclude: ["userId", "postId"] },
+      include: [
+        {
+          model: User,
+          include: [
+            {
+              model: Profile,
+              attributes: {
+                exclude: [
+                  "id",
+                  "userId",
+                  "bio",
+                  "contactNumber",
+                  "dateOfBirth",
+                  "address",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+          attributes: {
+            exclude: [
+              "password",
+              "username",
+              "refreshToken",
+              "email",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    });
   };
 
   return Comment;
