@@ -120,5 +120,13 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  Comment.updateComment = async ({ text, commentId, transaction }) => {
+    return await Comment.update(
+      { text },
+      { where: { id: commentId } },
+      { transaction }
+    );
+  };
+
   return Comment;
 };

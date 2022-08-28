@@ -3,7 +3,12 @@ const {
   createTextComment,
   getComments,
   createImageComment,
+  updateComment,
 } = require("../controllers/commentControllers");
+const {
+  checkIfCommentExists,
+  canEditComment,
+} = require("../middlewares/commentMiddlewares");
 const { checkPostIfExist } = require("../middlewares/postMiddlewares");
 const { authenticate } = require("../middlewares/userMiddleware");
 const { ImageService } = require("../services/imageServices");
@@ -28,5 +33,11 @@ route.post(
 );
 
 route.get("/:postId", [checkPostIfExist], getComments);
+
+route.put(
+  "/:commentId",
+  [authenticate, checkIfCommentExists, canEditComment],
+  updateComment
+);
 
 module.exports = route;
