@@ -182,9 +182,15 @@ exports.getPostDetails = async (req, res) => {
       where: { id: post.id },
     });
 
-    return res
-      .status(200)
-      .send({ msg: "Post Details Found", data: postDetails });
+    const imagePost = await ImagePost.findAll({
+      where: { postId: post.id },
+      attributes: { exclude: ["id", "postId", "createdAt", "updatedAt"] },
+    });
+
+    return res.status(200).send({
+      msg: "Post Details Found",
+      data: { post: postDetails, imagePost },
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).send({ msg: "Something went wrong.", err });
