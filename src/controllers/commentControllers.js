@@ -24,3 +24,19 @@ exports.createTextComment = async (req, res) => {
       .send({ msg: "Something went wrong.", err: err.message });
   }
 };
+
+exports.getComments = async (req, res) => {
+  const post = req.post;
+  try {
+    const comments = await Comment.getAllCommentsByPostId({ postId: post.id });
+
+    return res
+      .status(200)
+      .send({ msg: `Comments for post ID: ${post.id}`, data: comments });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .send({ msg: "Something went wrong.", err: err.message });
+  }
+};

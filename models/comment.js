@@ -63,5 +63,9 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  Comment.getAllCommentsByPostId = async ({ postId }) => {
+    return await Comment.findAll({ where: { postId } });
+  };
+
   return Comment;
 };
