@@ -23,7 +23,7 @@ app.use("/user", userRoutes);
 app.use("/avatar", avatarRoutes);
 app.use(followerRoutes);
 app.use("/post", postRoutes);
-app.use(commentRoutes);
+app.use("/comment", commentRoutes);
 
 app.use((error, req, res, next) => {
   return res.status(500).send({ msg: error.message });

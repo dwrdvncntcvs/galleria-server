@@ -90,6 +90,7 @@ exports.checkPostIfExist = async (req, res, next) => {
 
   if (!post) return res.status(404).send({ msg: "Post not found." });
 
+  req.post = post;
   next();
 };
 

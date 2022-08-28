@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       text: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       imageUrl: {
@@ -55,5 +55,13 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "comments",
     }
   );
+
+  Comment.createNewComment = async ({ text, postId, userId, transaction }) => {
+    return await Comment.create(
+      { text, imageUrl: "", postId, userId },
+      { transaction }
+    );
+  };
+
   return Comment;
 };
