@@ -1,4 +1,4 @@
-const { sequelize, Avatar, Profile } = require("../../models");
+const { sequelize, Profile } = require("../../models");
 const { uploadFileToFS } = require("../services/firebaseService");
 const { errorMessage } = require("../utils/error");
 
