@@ -1,4 +1,10 @@
-const { sequelize, Post, ImagePost, Follower } = require("../../models");
+const {
+  sequelize,
+  Post,
+  ImagePost,
+  Follower,
+  Comment,
+} = require("../../models");
 const { uploadFileToFS } = require("../services/firebaseService");
 const { errorMessage } = require("../utils/error");
 const { addKey, convertToArray, addIDKey } = require("../utils/helper");
@@ -164,6 +170,23 @@ exports.deletePost = async (req, res) => {
 
     return res.status(200).send({ msg: "Post Deleted" });
   } catch (err) {
+    return res.status(500).send({ msg: "Something went wrong.", err });
+  }
+};
+
+exports.getPostDetails = async (req, res) => {
+  const post = req.post;
+
+  try {
+    const postDetails = await Post.findOne({
+      where: { id: post.id },
+    });
+
+    return res
+      .status(200)
+      .send({ msg: "Post Details Found", data: postDetails });
+  } catch (err) {
+    console.log(err);
     return res.status(500).send({ msg: "Something went wrong.", err });
   }
 };

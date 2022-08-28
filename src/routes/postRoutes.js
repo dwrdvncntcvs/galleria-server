@@ -7,6 +7,7 @@ const {
   updatePostContent,
   getAllPosts,
   deletePost,
+  getPostDetails,
 } = require("../controllers/postController");
 const {
   hasText,
@@ -34,6 +35,8 @@ routes.post("/text", [authenticate, hasText(TEXT)], createTextPost);
 routes.post("/image", [authenticate, upload("single")], createImagePost);
 
 routes.post("/images", [authenticate, upload("array")], createImagesPost);
+
+routes.get("/:postId", [checkPostIfExist], getPostDetails)
 
 routes.get(
   "/posts/:username",
