@@ -40,3 +40,25 @@ exports.getComments = async (req, res) => {
       .send({ msg: "Something went wrong.", err: err.message });
   }
 };
+
+exports.createImageComment = async (req, res) => {
+  const { text } = req.body;
+  const post = req.post;
+  const user = req.user;
+  const file = req.file;
+
+  try {
+    await Comment.createImageComment({
+      imageFile: file,
+      postId: post.id,
+      userId: user.id,
+      text,
+    });
+
+    return res.status(200).send({ msg: "Image comment created." });
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ msg: "Something went wrong.", err: err.message });
+  }
+};

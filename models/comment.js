@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { uploadFileToFS } = require("../src/services/firebaseService");
 module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
     /**
@@ -102,6 +103,21 @@ module.exports = (sequelize, DataTypes) => {
         },
       ],
     });
+  };
+
+  Comment.createImageComment = async ({
+    imageFile,
+    postId,
+    userId,
+    text,
+    transaction,
+  }) => {
+    const imageUrl = await uploadFileToFS({ file: imageFile });
+
+    return await Comment.create(
+      { imageUrl, postId, userId, text },
+      { transaction }
+    );
   };
 
   return Comment;
