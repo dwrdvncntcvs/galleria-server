@@ -17,8 +17,6 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(Post, { foreignKey: "userId" });
 
-      this.hasOne(Refresher, { foreignKey: "userId" });
-
       this.hasMany(Comment, { foreignKey: "userId" });
     }
   }
@@ -79,6 +77,10 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      refreshToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,
@@ -92,6 +94,15 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
+
+  User.createUser = async ({ userData, transaction }) => {
+    const { first_name, last_name, username, email, password } = userData;
+
+    return await User.create(
+      { first_name, last_name, username, email, password, refreshToken: "" },
+      { transaction }
+    );
+  };
 
   User.findUserByEmail = async (email) => {
     return await User.findOne({ where: { email } });
@@ -109,5 +120,29 @@ module.exports = (sequelize, DataTypes) => {
     return await User.findOne({ where: { id } });
   };
 
+  User.setRefreshToken = async ({ token, userId, transaction }) => {
+    return await User.update(
+      { refreshToken: token },
+      { where: { id: userId } },
+      { transaction }
+    );
+  };
+
+  User.getRefreshTokenByUserId = async (userId) => {
+    return await User.findOne({ where: { id: userId } });
+    // return user;
+  };
+
+  User.getRefreshToken = async (token) => {
+    return await User.findOne({ where: { refreshToken: token } });
+  };
+
+  User.removeRefreshTokenByUserId = async ({ userId, transaction }) => {
+    return await User.update(
+      { refreshToken: "" },
+      { where: { id: userId } },
+      { transaction }
+    );
+  };
   return User;
 };

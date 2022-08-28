@@ -1,5 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
+const {
+  uploadFileToFS,
+  removeFileFromFS,
+} = require("../src/services/firebaseService");
 module.exports = (sequelize, DataTypes) => {
   class ImagePost extends Model {
     /**
@@ -24,19 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      filename: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      path: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      mimetype: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      size: {
+      postImageUrl: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -60,6 +52,41 @@ module.exports = (sequelize, DataTypes) => {
       post["dataValues"]["ImagePost"] = imagePosts;
       return post;
     });
+  };
+
+  ImagePost.createAndUploadImage = async ({
+    imageData,
+    postId,
+    transaction,
+  }) => {
+    const imageUrl = await uploadFileToFS({ file: imageData });
+
+    try {
+      return await ImagePost.create(
+        { postImageUrl: imageUrl, postId },
+        { transaction }
+      );
+    } catch (err) {
+      if (err) {
+        await removeFileFromFS({ imageUrl });
+        return new Error("Error saving image to database.");
+      }
+    }
+  };
+
+  ImagePost.uploadMultipleImages = async ({
+    imageArr,
+    postId,
+    transaction,
+  }) => {
+    const imageUrls = await uploadFileToFS({ file: imageArr });
+
+    const imagePostArr = addDataToImagePost(imageUrls, postId);
+    return await ImagePost.bulkCreate(imagePostArr, { transaction });
+  };
+
+  const addDataToImagePost = (imageUrls, postId) => {
+    return imageUrls.map((imageUrl) => ({ postImageUrl: imageUrl, postId }));
   };
   return ImagePost;
 };

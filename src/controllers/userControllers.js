@@ -7,27 +7,19 @@ const {
 } = require("../utils/constant");
 
 exports.createNewUser = async (req, res) => {
-  const { first_name, last_name, username, email, password } = req.body;
-
   const t = await sequelize.transaction();
   try {
-    const user = await User.create(
-      { first_name, last_name, username, email, password },
-      { transaction: t }
-    );
+    const { id } = await User.createUser({
+      userData: req.body,
+      transaction: t,
+    });
+    await Profile.createDefaultProfile({ userId: id, transaction: t });
 
-    await Profile.create({ userId: user.id, bio: "" }, { transaction: t });
-
-    await Avatar.create({ userId: user.id }, { transaction: t });
-
-    await Refresher.create(
-      { userId: user.id, refreshToken: "" },
-      { transaction: t }
-    );
     await t.commit();
 
     return res.status(200).send({ msg: "Account created." });
   } catch (err) {
+    console.log(err);
     const { status, msg } = errorMessage(err);
     await t.rollback();
     return res.status(status).send({ msg });
@@ -45,11 +37,11 @@ exports.signIn = async (req, res) => {
 
   const t = await sequelize.transaction();
 
-  await Refresher.update(
-    { refreshToken },
-    { where: { userId: id } },
-    { transaction: t }
-  );
+  await User.setRefreshToken({
+    token: refreshToken,
+    userId: id,
+    transaction: t,
+  });
   await t.commit();
 
   res.cookie("jwt", refreshToken, {
@@ -67,7 +59,7 @@ exports.userProfile = async (req, res) => {
     const profile = await User.findOne({
       where: { username },
       attributes: { exclude: ["password"] },
-      include: [{ model: Profile }, { model: Avatar }],
+      include: [{ model: Profile }],
     });
 
     return res.send({ profile });
@@ -124,13 +116,15 @@ exports.tokenRefresher = async (req, res) => {
   const refreshToken = req.cookies.jwt;
   const { id } = decode(refreshToken);
 
-  const foundToken = await Refresher.findRefreshTokenByUserId(id);
+  const foundToken = await User.getRefreshTokenByUserId(id);
+
+  if (!foundToken) return res.status(404).send({ msg: "User Not Found" });
 
   if (foundToken.refreshToken === "")
     return res.status(403).send({ msg: "Forbidden" });
 
   verify(refreshToken, REFRESH_TOKEN_SECRET, (err, payload) => {
-    if (err || payload.id !== foundToken.userId)
+    if (err || payload.id !== foundToken.id)
       return res.status(401).send({ msg: "Invalid Credentials" });
 
     const dataObj = { id: payload.id, email: payload.email };
@@ -156,17 +150,16 @@ exports.signOut = async (req, res) => {
   try {
     const t = await sequelize.transaction();
 
-    const foundToken = await Refresher.findRefreshToken(refreshToken);
+    const foundToken = await User.getRefreshToken(refreshToken);
     if (!foundToken) {
       res.clearCookie("jwt", { httpOnly: true });
       return res.status(200).send({ msg: "Sign out successfully." });
     }
 
-    await Refresher.update(
-      { refreshToken: "" },
-      { where: { id: foundToken.id } },
-      { transaction: t }
-    );
+    await User.removeRefreshTokenByUserId({
+      userId: foundToken.id,
+      transaction: t,
+    });
 
     await t.commit();
     res.clearCookie("jwt", { httpOnly: true });

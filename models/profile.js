@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { removeFileFromFS } = require("../src/services/firebaseService");
 module.exports = (sequelize, DataTypes) => {
   class Profile extends Model {
     /**
@@ -54,5 +55,44 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "profiles",
     }
   );
+
+  Profile.createDefaultProfile = async ({ userId, transaction }) => {
+    console.log("Creating profile...");
+    return await Profile.create(
+      {
+        userId,
+        bio: "",
+        profileImage: "",
+        contactNumber: "",
+        dateOfBirth: null,
+        address: "",
+      },
+      { transaction }
+    );
+  };
+
+  Profile.updateProfileImage = async (
+    { profileImage, userId },
+    transaction
+  ) => {
+    return await Profile.update(
+      { profileImage },
+      { where: { userId } },
+      { transaction }
+    );
+  };
+
+  Profile.removeProfileImage = async ({ userId, transaction }) => {
+    const { profileImage } = await Profile.findOne({ where: { userId } });
+
+    await removeFileFromFS({ imageUrl: profileImage });
+
+    return await Profile.update(
+      { profileImage: "" },
+      { where: { userId } },
+      { transaction }
+    );
+  };
+
   return Profile;
 };
