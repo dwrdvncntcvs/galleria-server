@@ -75,12 +75,14 @@ module.exports = (sequelize, DataTypes) => {
     console.log("Parameters: ", parameter);
     return await Promise.all(
       userData.map(async (data) => {
-        const { User, Avatar } = require("../models");
+        const { User, Profile } = require("../models");
+
+        console.log(data[parameter]);
 
         const user = await User.findOne({
           where: { id: data[parameter] },
-          attributes: { exclude: ["password"] },
-          include: [{ model: Avatar }],
+          attributes: { exclude: ["password", "refreshToken"] },
+          include: [{ model: Profile }],
         });
 
         return user;

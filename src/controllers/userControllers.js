@@ -30,7 +30,7 @@ exports.signIn = async (req, res) => {
   const { id, email } = req.currentUser;
 
   const payload = { id, email };
-  const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "500s" });
+  const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "24h" });
   const refreshToken = sign(payload, REFRESH_TOKEN_SECRET, {
     expiresIn: "365d",
   });
@@ -130,7 +130,7 @@ exports.tokenRefresher = async (req, res) => {
     const dataObj = { id: payload.id, email: payload.email };
 
     const accessToken = sign(dataObj, ACCESS_TOKEN_SECRET, {
-      expiresIn: "500s",
+      expiresIn: "24h",
     });
 
     return res.status(200).send({ accessToken });

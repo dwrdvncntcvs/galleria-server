@@ -50,6 +50,7 @@ exports.getFollowing = async (req, res) => {
       following,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({ msg: "Something went wrong." });
   }
 };
