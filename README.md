@@ -54,17 +54,17 @@ M_S_TYPE=memory
 PS: These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.
 
 + Assuming that you are using npm, to start the application, run these commands in the terminal:
-  + Create the database.
+  + Create database.
   ```bash
   npm run create
   ```
   
-  + Migrate the models.
+  + Migrate models.
   ```bash
   npm run migrate
   ```
   
-  + Start the application
+  + Start application
   ```bash
   npm run start
   ```
@@ -74,7 +74,7 @@ PS: These are the environment variables that I used for the project. Before runn
   PS: If you want to use my firebase storage, just [email](https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqVNSgchFtjqSwlvjMJRJRXJTDlbglSnQWDzkWsMXtHGXrjnwncdbhRHKtTNFgpXrLLLLB) me.
   
 + Optional Commands:
-  + Undo the previews migration.
+  + Undo previews migration.
   ```bash
   npm run undo
   ```
