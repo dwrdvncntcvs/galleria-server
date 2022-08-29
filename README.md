@@ -61,7 +61,7 @@ This project was written from scratch using JavaScript, NodeJS, Sequelize, Expre
 
   <i><b>Note</b>: If you want to use my firebase storage, just [email](https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqVNSgchFtjqSwlvjMJRJRXJTDlbglSnQWDzkWsMXtHGXrjnwncdbhRHKtTNFgpXrLLLLB) me.</i>
 
-<i><b>Note</b> : These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.</i>
+  <i><b>Note</b> : These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.</i>
 
 - Assuming that you are using <i><b>[NPM](https://www.npmjs.com/)</b></i>, to start the application, run these commands in the terminal:
 
