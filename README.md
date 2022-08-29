@@ -51,7 +51,7 @@ FIRE_APP_ID=1:
 M_S_TYPE=memory
 ```
 
-PS: These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.
+<i><b>Note</b>: These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.</i>
 
 + Assuming that you are using npm, to start the application, run these commands in the terminal:
   + Create database.
@@ -69,9 +69,9 @@ PS: These are the environment variables that I used for the project. Before runn
   npm run start
   ```
   
-  PS: If there's any error that you are facing on running these commands, please check carefully your environment variables related to the database.
+  <i><b>Note</b>: If there's any error that you are facing on running these commands, please check carefully your environment variables related to the database.</i>
   
-  PS: If you want to use my firebase storage, just [email](https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqVNSgchFtjqSwlvjMJRJRXJTDlbglSnQWDzkWsMXtHGXrjnwncdbhRHKtTNFgpXrLLLLB) me.
+  <i><b>Note</b>: If you want to use my firebase storage, just [email](https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqVNSgchFtjqSwlvjMJRJRXJTDlbglSnQWDzkWsMXtHGXrjnwncdbhRHKtTNFgpXrLLLLB) me.</i>
   
 + Optional Commands:
   + Undo previews migration.
