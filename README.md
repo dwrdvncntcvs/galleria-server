@@ -31,31 +31,31 @@ This project was written from scratch using JavaScript, NodeJS, Sequelize, Expre
 
 - Copy and paste these variables inside your <i><b>.env</b></i> file:
 
-```
-DATABASE_USERNAME=
-DATABASE_PASSWORD=
-DATABASE_HOST=
-DATABASE_NAME=
-DATABASE_DIALECT=
+      ```
+      DATABASE_USERNAME=
+      DATABASE_PASSWORD=
+      DATABASE_HOST=
+      DATABASE_NAME=
+      DATABASE_DIALECT=
 
-ACCESS_TOKEN_SECRET=
-REFRESH_TOKEN_SECRET=
+      ACCESS_TOKEN_SECRET=
+      REFRESH_TOKEN_SECRET=
 
-FIRE_API_KEY=
-FIRE_AUTH_DOMAIN=
-FIRE_PROJECT_ID=
-FIRE_STORAGE_BUCKET=
-FIRE_MESSAGING_SENDER_ID=
-FIRE_APP_ID=1:
+      FIRE_API_KEY=
+      FIRE_AUTH_DOMAIN=
+      FIRE_PROJECT_ID=
+      FIRE_STORAGE_BUCKET=
+      FIRE_MESSAGING_SENDER_ID=
+      FIRE_APP_ID=1:
 
-M_S_TYPE=memory
-```
+      M_S_TYPE=memory
+      ```
 
-- For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependecies that support this database were already installed.
+    - For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependecies that support this database were already installed.
 
-- Access token and refresh token secret where manually generated using md5 hashing. On this [website](https://www.md5hashgenerator.com/) you could generate your own secret tokens.
+    - Access token and refresh token secret where manually generated using md5 hashing. On this [website](https://www.md5hashgenerator.com/) you could generate your own secret tokens.
 
-- To create firebase own configuration, you can use this [Firebase documentation](https://firebase.google.com/docs) as reference. You can also create a project at the [Firebase website](https://firebase.google.com/) and copy the configuration.
+    - To create firebase own configuration, you can use this [Firebase documentation](https://firebase.google.com/docs) as reference. You can also create a project at the [Firebase website](https://firebase.google.com/) and copy the configuration.
 
   <i><b>Note</b> : If you were creating a project on your firebase, create a storage on the project immediately. </i>
 
