@@ -81,8 +81,25 @@ module.exports = (sequelize, DataTypes) => {
 
         const user = await User.findOne({
           where: { id: data[parameter] },
-          attributes: { exclude: ["password", "refreshToken"] },
-          include: [{ model: Profile }],
+          attributes: {
+            exclude: ["password", "refreshToken", "email", "updatedAt"],
+          },
+          include: [
+            {
+              model: Profile,
+              attributes: {
+                exclude: [
+                  "bio",
+                  "contactNumber",
+                  "dateOfBirth",
+                  "address",
+                  "userId",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
         });
 
         return user;

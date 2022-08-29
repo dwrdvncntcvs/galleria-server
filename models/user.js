@@ -103,7 +103,9 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.findUserByEmail = async (email) => {
-    return await User.findOne({ where: { email } });
+    return await User.findOne({
+      where: { email },
+    });
   };
 
   User.findUserByUsername = async (username) => {
@@ -115,7 +117,9 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.findUserByUserId = async (id) => {
-    return await User.findOne({ where: { id } });
+    return await User.findOne({
+      where: { id },
+    });
   };
 
   User.setRefreshToken = async ({ token, userId, transaction }) => {
@@ -128,7 +132,6 @@ module.exports = (sequelize, DataTypes) => {
 
   User.getRefreshTokenByUserId = async (userId) => {
     return await User.findOne({ where: { id: userId } });
-    // return user;
   };
 
   User.getRefreshToken = async (token) => {

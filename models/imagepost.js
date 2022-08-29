@@ -89,5 +89,13 @@ module.exports = (sequelize, DataTypes) => {
   const addDataToImagePost = (imageUrls, postId) => {
     return imageUrls.map((imageUrl) => ({ postImageUrl: imageUrl, postId }));
   };
+
+  ImagePost.getAllPostImages = async ({ postId }) => {
+    return await ImagePost.findAll({
+      where: { postId: postId },
+      attributes: { exclude: ["id", "postId", "createdAt", "updatedAt"] },
+    });
+  };
+
   return ImagePost;
 };

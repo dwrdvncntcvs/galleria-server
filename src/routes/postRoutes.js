@@ -44,7 +44,7 @@ routes.get(
   getUserPosts
 );
 
-routes.get("/posts", [checkUserId], getAllPosts);
+routes.get("/", [checkUserId], getAllPosts);
 
 routes.put(
   "/:postId",

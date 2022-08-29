@@ -23,6 +23,7 @@ exports.validatePassword = async (req, res, next) => {
   if (!isValid)
     return res.status(403).send({ msg: "Email or password incorrect." });
 
+  delete req.currentUser["dataValues"]["password"];
   next();
 };
 

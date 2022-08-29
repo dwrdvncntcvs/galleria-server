@@ -49,7 +49,9 @@ exports.signIn = async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000,
   });
 
-  return res.status(200).send({ accessToken });
+  return res
+    .status(200)
+    .send({ accessToken, refreshToken, userData: req.currentUser });
 };
 
 exports.userProfile = async (req, res) => {

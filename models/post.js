@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Post.findAllPosts = async ({ userId, userData, limit = 0, page }) => {
-    const { User, Avatar } = require("../models");
+    const { User, Profile } = require("../models");
 
     const paramObj = userId
       ? {
@@ -70,13 +70,28 @@ module.exports = (sequelize, DataTypes) => {
             {
               model: User,
               attributes: {
-                exclude: ["password", "email", "createdAt", "updatedAt"],
+                exclude: [
+                  "password",
+                  "email",
+                  "createdAt",
+                  "updatedAt",
+                  "refreshToken",
+                ],
               },
               include: [
                 {
-                  model: Avatar,
+                  model: Profile,
                   attributes: {
-                    exclude: ["createdAt", "updatedAt"],
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "id",
+                      "bio",
+                      "contactNumber",
+                      "dateOfBirth",
+                      "address",
+                      "userId",
+                    ],
                   },
                 },
               ],
@@ -91,13 +106,28 @@ module.exports = (sequelize, DataTypes) => {
             {
               model: User,
               attributes: {
-                exclude: ["password", "email", "createdAt", "updatedAt"],
+                exclude: [
+                  "password",
+                  "email",
+                  "createdAt",
+                  "updatedAt",
+                  "refreshToken",
+                ],
               },
               include: [
                 {
-                  model: Avatar,
+                  model: Profile,
                   attributes: {
-                    exclude: ["createdAt", "updatedAt"],
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "id",
+                      "bio",
+                      "contactNumber",
+                      "dateOfBirth",
+                      "address",
+                      "userId",
+                    ],
                   },
                 },
               ],
@@ -122,6 +152,29 @@ module.exports = (sequelize, DataTypes) => {
       await removeFileFromFS({ imageUrl: image.postImageUrl });
     }
     return;
+  };
+
+  Post.getPostDetails = async ({ postId }) => {
+    const { User } = require("../models");
+
+    return await Post.findOne({
+      where: { id: postId },
+      attributes: { exclude: ["createdAt"] },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "email",
+              "password",
+              "refreshToken",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    });
   };
 
   return Post;

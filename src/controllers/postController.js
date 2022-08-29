@@ -4,7 +4,9 @@ const {
   ImagePost,
   Follower,
   Comment,
+  User,
 } = require("../../models");
+const user = require("../../models/user");
 const { uploadFileToFS } = require("../services/firebaseService");
 const { errorMessage } = require("../utils/error");
 const { addKey, convertToArray, addIDKey } = require("../utils/helper");
@@ -131,12 +133,13 @@ exports.updatePostContent = async (req, res) => {
 };
 
 exports.getAllPosts = async (req, res) => {
+  console.log("Getting all posts...");
   const limit = req.query.limit;
   const page = (req.query.page - 1) * limit;
   const userId = req.query.id;
+  console.log("User Id: ", userId);
 
   try {
-    console.log("User Id: ", userId);
     let user;
     if (userId) {
       const { userData } = await Follower.getFollowing(userId);
@@ -178,14 +181,9 @@ exports.getPostDetails = async (req, res) => {
   const post = req.post;
 
   try {
-    const postDetails = await Post.findOne({
-      where: { id: post.id },
-    });
+    const postDetails = await Post.getPostDetails({ postId: post.id });
 
-    const imagePost = await ImagePost.findAll({
-      where: { postId: post.id },
-      attributes: { exclude: ["id", "postId", "createdAt", "updatedAt"] },
-    });
+    const imagePost = await ImagePost.getAllPostImages({ postId: post.id });
 
     return res.status(200).send({
       msg: "Post Details Found",
