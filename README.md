@@ -31,7 +31,7 @@ This project was written from scratch using JavaScript, NodeJS, Sequelize, Expre
 
 - Copy and paste these variables inside your <i><b>.env</b></i> file:
 
-      ```
+     
       DATABASE_USERNAME=
       DATABASE_PASSWORD=
       DATABASE_HOST=
@@ -49,7 +49,7 @@ This project was written from scratch using JavaScript, NodeJS, Sequelize, Expre
       FIRE_APP_ID=1:
 
       M_S_TYPE=memory
-      ```
+     
 
     - For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependecies that support this database were already installed.
 
