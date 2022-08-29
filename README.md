@@ -51,7 +51,7 @@ FIRE_APP_ID=1:
 M_S_TYPE=memory
 ```
 
-- For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependecies that support this database were already installed.
+- For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependencies that support this database were already installed.
 
 - Access token and refresh token secret where manually generated using md5 hashing. On this [website](https://www.md5hashgenerator.com/) you could generate your own secret tokens.
 
@@ -63,19 +63,19 @@ M_S_TYPE=memory
 
 - Assuming that you are using <i><b>[NPM](https://www.npmjs.com/)</b></i>, to start the application, run these commands in the terminal:
 
-  - Create database.
+  Create database.
 
   ```bash
   npm run create
   ```
 
-  - Migrate models.
+  Migrate models.
 
   ```bash
   npm run migrate
   ```
 
-  - Start application
+  Start application
 
   ```bash
   npm run start
@@ -87,19 +87,19 @@ M_S_TYPE=memory
 
 - Optional Commands:
 
-  - Undo previews migration.
+  Undo previews migration.
 
   ```bash
   npm run undo
   ```
 
-  - Undo all migrations.
+  Undo all migrations.
 
   ```bash
    npm run undo:all
   ```
 
-  - Creating new model.
+  Creating new model.
 
   ```bash
   npm run model -- -name ... -attributes ...
