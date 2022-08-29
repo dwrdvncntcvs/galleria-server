@@ -1,8 +1,6 @@
 # Galleria API
 
-## Galleria
-
-A social media application project where users could post images and texts to share with other people that have an account on the application. The application also has followers and following where it limits the posts that the users will see on their feed.
+<i><b>Galleria</b></i> is social media application project where users could post images and texts to share with other people that have an account on the application. The application also has followers and following where it limits the posts that the users will see on their feed.
 
 This project was written from scratch using JavaScript, NodeJS, Sequelize, Express, Firebase, and other libraries. I used Firebase Storage to store files on the cloud instead of storing locally. The purpose of this application is for learning new practices, technologies, and techniques on creating social media applications. The project doesn't use any external APIs to fetch data and serve to the user. The application will only depend on the data that's coming to it.
 
