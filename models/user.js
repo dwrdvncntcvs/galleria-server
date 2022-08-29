@@ -142,5 +142,20 @@ module.exports = (sequelize, DataTypes) => {
       { transaction }
     );
   };
+
+  User.getUserProfileByUsername = async (username) => {
+    const { Profile } = require("../models");
+
+    return await User.findOne({
+      where: { username },
+      attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Profile,
+          attributes: { exclude: ["id", "createdAt", "updatedAt", "userId"] },
+        },
+      ],
+    });
+  };
   return User;
 };
