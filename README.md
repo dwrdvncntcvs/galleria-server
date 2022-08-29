@@ -51,15 +51,15 @@ FIRE_APP_ID=1:
 M_S_TYPE=memory
 ```
 
-- For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependencies that support this database were already installed.
+- For the database configuration, it will depend on the database installed on your local machine. For this project, it is advised that you use PostgreSQL as the dependecies that support this database were already installed.
 
 - Access token and refresh token secret where manually generated using md5 hashing. On this [website](https://www.md5hashgenerator.com/) you could generate your own secret tokens.
 
 - To create firebase own configuration, you can use this [Firebase documentation](https://firebase.google.com/docs) as reference. You can also create a project at the [Firebase website](https://firebase.google.com/) and copy the configuration.
 
-  <i><b>Note</b>: If you were creating a project on your firebase, create a storage on the project immediately.
+  <i><b>Note</b> : If you were creating a project on your firebase, create a storage on the project immediately. </i>
 
-<i><b>Note</b>: These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.</i>
+<i><b>Note</b> : These are the environment variables that I used for the project. Before running the application on your local machine, please be advised that all of these are very important variables and should be configured accordingly.</i>
 
 - Assuming that you are using <i><b>[NPM](https://www.npmjs.com/)</b></i>, to start the application, run these commands in the terminal:
 
