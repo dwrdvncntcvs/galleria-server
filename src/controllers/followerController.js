@@ -54,3 +54,22 @@ exports.getFollowing = async (req, res) => {
     return res.status(500).send({ msg: "Something went wrong." });
   }
 };
+
+exports.unFollowUser = async (req, res) => {
+  const foundUser = req.foundUser;
+
+  const t = await sequelize.transaction();
+  try {
+    await Follower.unfollowUser({ userData: foundUser, transaction: t });
+
+    return res.status(200).send({
+      msg: `You successfully unfollow ${foundUser.first_name} ${foundUser.last_name}`,
+    });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    return res
+      .status(500)
+      .send({ msg: "Something went wrong.", err: err.message });
+  }
+};

@@ -89,5 +89,13 @@ module.exports = (sequelize, DataTypes) => {
       })
     );
   };
+
+  Follower.unfollowUser = async ({ userData, transaction }) => {
+    return await Follower.destroy(
+      { where: { userId: userData.id } },
+      { transaction }
+    );
+  };
+
   return Follower;
 };

@@ -3,8 +3,12 @@ const {
   followUser,
   getFollower,
   getFollowing,
+  unFollowUser,
 } = require("../controllers/followerController");
-const { canFollow } = require("../middlewares/followerMiddlewares");
+const {
+  canFollow,
+  canUnFollow,
+} = require("../middlewares/followerMiddlewares");
 const {
   authenticate,
   checkIfUsernameExist,
@@ -28,6 +32,12 @@ routes.get(
   "/:username/following",
   [authenticate, checkIfUsernameExist],
   getFollowing
+);
+
+routes.put(
+  "/unfollow/:username",
+  [authenticate, checkIfUsernameExist, canUnFollow],
+  unFollowUser
 );
 
 module.exports = routes;
