@@ -65,19 +65,19 @@ M_S_TYPE=memory
 
 - Assuming that you are using <i><b>[NPM](https://www.npmjs.com/)</b></i>, to start the application, run these commands in the terminal:
 
-  Create database.
+  > To create database.
 
   ```bash
   npm run create
   ```
 
-  Migrate models.
+  > To migrate models.
 
   ```bash
   npm run migrate
   ```
 
-  Start application
+  > To start the application
 
   ```bash
   npm run start
@@ -87,19 +87,19 @@ M_S_TYPE=memory
 
 - Optional Commands:
 
-  Undo previews migration.
+  > To undo previews migration.
 
   ```bash
   npm run undo
   ```
 
-  Undo all migrations.
+  > To undo all migrations.
 
   ```bash
    npm run undo:all
   ```
 
-  Creating new model.
+  > To create new model.
 
   ```bash
   npm run model -- -name ... -attributes ...
