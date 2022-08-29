@@ -7,18 +7,20 @@ const {
   deleteUser,
   tokenRefresher,
   signOut,
+  changeUserPassword,
 } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
   validatePassword,
   authenticate,
   checkIfUsernameExist,
-  canEdit,
+  canEdit,  
+  checkNewPassword,
 } = require("../middlewares/userMiddleware");
 
 const routes = express.Router();
 
-routes.post("/sign-up", createNewUser);
+routes.post("/sign-up", [checkNewPassword], createNewUser);
 
 routes.post("/sign-in", [checkIfEmailExists, validatePassword], signIn);
 
@@ -31,5 +33,11 @@ routes.delete("/:userId", [authenticate, canEdit], deleteUser);
 routes.get("/refresh", tokenRefresher);
 
 routes.get("/sign-out", signOut);
+
+routes.put(
+  "/change-password/:userId",
+  [authenticate, validatePassword, checkNewPassword, canEdit],
+  changeUserPassword
+);
 
 module.exports = routes;

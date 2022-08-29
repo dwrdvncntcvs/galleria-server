@@ -66,13 +66,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: { msg: [403, "\nEmail address should not be empty."] },
           notNull: { msg: [403, "\nEmail address should not be empty."] },
-          is: {
-            args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g,
-            msg: [
-              403,
-              "\nPassword must contain at least 8 letters in length, uppercase letters, lowercase letters, one number, and one symbol",
-            ],
-          },
+          // is: {
+          //   args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g,
+          //   msg: [
+          //     403,
+          //     "\nPassword must contain at least 8 letters in length, uppercase letters, lowercase letters, one number, and one symbol",
+          //   ],
+          // },
         },
       },
       refreshToken: {
@@ -160,5 +160,17 @@ module.exports = (sequelize, DataTypes) => {
       ],
     });
   };
+
+  User.changeUserPassword = async ({ password, userId, transaction }) => {
+    const salt = await genSalt(10, "a");
+    const hashPass = await hash(password, salt);
+
+    return await User.update(
+      { password: hashPass },
+      { where: { id: userId } },
+      { transaction }
+    );
+  };
+
   return User;
 };

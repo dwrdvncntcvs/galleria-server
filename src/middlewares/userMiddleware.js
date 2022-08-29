@@ -17,13 +17,12 @@ exports.checkIfEmailExists = async (req, res, next) => {
 exports.validatePassword = async (req, res, next) => {
   const { password } = req.body;
 
-  const user = req.currentUser;
+  const user = req.currentUser ?? req.user;
+
   const isValid = await User.comparePassword(password, user.password);
 
-  if (!isValid)
-    return res.status(403).send({ msg: "Email or password incorrect." });
+  if (!isValid) return res.status(403).send({ msg: "Incorrect Password." });
 
-  delete req.currentUser["dataValues"]["password"];
   next();
 };
 
@@ -77,6 +76,21 @@ exports.checkUserId = (req, res, next) => {
   if (id)
     if (!isUuidValid(id))
       return res.status(404).send({ msg: "User not found." });
+
+  next();
+};
+
+exports.checkNewPassword = (req, res, next) => {
+  const { newPassword } = req.body;
+
+  if (
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g.test(
+      newPassword
+    )
+  )
+    return res.status(403).send({
+      msg: "Password must contain at least 8 letters in length, uppercase letters, lowercase letters, one number, and one symbol",
+    });
 
   next();
 };

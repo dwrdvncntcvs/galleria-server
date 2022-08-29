@@ -28,6 +28,7 @@ exports.createNewUser = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   const { id, email } = req.currentUser;
+  delete req.currentUser["dataValues"]["password"];
 
   const payload = { id, email };
   const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "24h" });
@@ -166,5 +167,27 @@ exports.signOut = async (req, res) => {
     console.log(err);
     await t.rollback();
     return res.status(500).send({ msg: "Something went wrong" });
+  }
+};
+
+exports.changeUserPassword = async (req, res) => {
+  const { newPassword } = req.body;
+  const user = req.user;
+
+  const t = await sequelize.transaction();
+  try {
+    await User.changeUserPassword({
+      password: newPassword,
+      userId: user.id,
+      transaction: t,
+    });
+    await t.commit();
+
+    return res.status(200).send({ msg: "Password changed successfully." });
+  } catch (err) {
+    console.log(err);
+    const { status, msg } = errorMessage(err);
+    await t.rollback();
+    return res.status(status).send({ msg, err: err.message });
   }
 };
