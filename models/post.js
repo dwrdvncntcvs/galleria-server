@@ -51,7 +51,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Post.findPostById = async (id) => {
-    return await Post.findOne({ where: { id } });
+    return await Post.findOne({
+      where: { id },
+      attributes: { exclude: ["updatedAt"] },
+    });
   };
 
   Post.findAllPosts = async ({ userId, userData, limit = 0, page }) => {

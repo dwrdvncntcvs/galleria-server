@@ -70,6 +70,7 @@ exports.userPostsPagination = async (req, res, next) => {
 
   const data = await Post.findAndCountAll({
     where: { userId: id },
+    attributes: { exclude: ["updatedAt"] },
     limit,
     offset: page,
     order: [["createdAt", "DESC"]],
