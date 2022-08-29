@@ -4,7 +4,7 @@
 
 A social media application project where users could post images and texts to share with other people that have an account on the application. The application also has followers and following where it limits the posts that the users will see on their feed. 
 
-This project was written from scratch using JavaScript, NodeJS, Sequelize, Express, Firebase, and other libraries. I used Firebase Storage to store files on the cloud instead of storing localy. The purpose of this application is for learning new practices, technologies, and techniques on creating social media applications. The project doesn't use any external APIs to fetch data and serve to the user. The application will only depend on the data that's comming to it.
+This project was written from scratch using JavaScript, NodeJS, Sequelize, Express, Firebase, and other libraries. I used Firebase Storage to store files on the cloud instead of storing locally. The purpose of this application is for learning new practices, technologies, and techniques on creating social media applications. The project doesn't use any external APIs to fetch data and serve to the user. The application will only depend on the data that's coming to it.
 
 ## Installation
 
@@ -90,5 +90,5 @@ PS: These are the environment variables that I used for the project. Before runn
   ```
 ## Galleria's RESTFul API
 
-This is the backend application of Galleria where it will be deployed on server side. The application is written in JavaScript with its run-time environment [NodeJs](https://nodejs.org/). The application was created using [ExpressJS](https://expressjs.com/) which is a nodejs web framework and could be used for creating RESTful APIs. The database used was PostgreSQL during development but could be altered because I have used [Sequelize](https://sequelize.org/) which is a ORM or Object-Relational Mapping. It allows me to easily create models and migrate it to the database without using SQL queries manualy. 
+This is the backend application of Galleria where it will be deployed on server side. The application is written in JavaScript with its run-time environment [NodeJs](https://nodejs.org/). The application was created using [ExpressJS](https://expressjs.com/) which is a nodejs web framework and could be used for creating RESTful APIs. The database used was PostgreSQL during development but could be altered because I have used [Sequelize](https://sequelize.org/) which is a ORM or Object-Relational Mapping. It allows me to easily create models and migrate it to the database without using SQL queries manually. 
 
