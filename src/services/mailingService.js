@@ -46,7 +46,7 @@ const sendOtpVerificationEmail = async (userData, otp) => {
   return new Promise((resolve, reject) => {
     transport.sendMail(
       {
-        from: GOOGLE_CRED.user,
+        from: `Galleria Team <${GOOGLE_CRED.user}>`,
         to: userData.email,
         subject: "EMAIL VERIFICATION",
         html: `
