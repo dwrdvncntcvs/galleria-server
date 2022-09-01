@@ -37,9 +37,22 @@ exports.authenticate = (req, res, next) => {
 
     const { id, email } = payload;
     const user = await User.findOne({ where: { id, email } });
+
+    if (!user.verified)
+      return res.status(403).send({ msg: "Verify your account first." });
+
     req.user = user;
     next();
   });
+};
+
+exports.checkIfUserIsVerified = (req, res, next) => {
+  const user = req.currentUser;
+
+  if (!user.verified)
+    return res.status(403).send({ msg: "Verify your account first." });
+
+  next();
 };
 
 exports.checkIfUsernameExist = async (req, res, next) => {
@@ -81,11 +94,11 @@ exports.checkUserId = (req, res, next) => {
 };
 
 exports.checkNewPassword = (req, res, next) => {
-  const { newPassword } = req.body;
+  const { password } = req.body;
 
   if (
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g.test(
-      newPassword
+      password
     )
   )
     return res.status(403).send({

@@ -14,15 +14,20 @@ const {
   validatePassword,
   authenticate,
   checkIfUsernameExist,
-  canEdit,  
+  canEdit,
   checkNewPassword,
+  checkIfUserIsVerified,
 } = require("../middlewares/userMiddleware");
 
 const routes = express.Router();
 
 routes.post("/sign-up", [checkNewPassword], createNewUser);
 
-routes.post("/sign-in", [checkIfEmailExists, validatePassword], signIn);
+routes.post(
+  "/sign-in",
+  [checkIfEmailExists, validatePassword, checkIfUserIsVerified],
+  signIn
+);
 
 routes.get("/profile/:username", [checkIfUsernameExist], userProfile);
 

@@ -1,22 +1,39 @@
-const { sequelize, User, Profile, Avatar, Refresher } = require("../../models");
+const { sequelize, User, Profile, Otp } = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { sign, decode, verify } = require("jsonwebtoken");
 const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
+  OTP_TOKEN_SECRET,
 } = require("../utils/constant");
+const { generateOtp } = require("../services/otpService");
+const { sendOtpVerificationEmail } = require("../services/mailingService");
 
 exports.createNewUser = async (req, res) => {
   const t = await sequelize.transaction();
   try {
-    const { id } = await User.createUser({
+    const user = await User.createUser({
       userData: req.body,
       transaction: t,
     });
-    await Profile.createDefaultProfile({ userId: id, transaction: t });
+
+    const otp = generateOtp();
+
+    const otpToken = sign({ otp, userId: user.id }, OTP_TOKEN_SECRET, {
+      expiresIn: "5mins",
+    });
+
+    await Profile.createDefaultProfile({ userId: user.id, transaction: t });
+
+    await Otp.createOtpToken({
+      token: otpToken,
+      userId: user.id,
+      transaction: t,
+    });
 
     await t.commit();
 
+    await sendOtpVerificationEmail(user, otp);
     return res.status(200).send({ msg: "Account created." });
   } catch (err) {
     console.log(err);
