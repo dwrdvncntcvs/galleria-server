@@ -135,3 +135,6 @@ This is the backend application of Galleria where it will be deployed on server 
 > <i>This application is only the backend fo Galleria. It was built as my personal project to enhance and improve my understand and knowledge on building backend application using NodeJs and other libraries. I also want to create my own "Social Media" application where users will be able to post what they want like pictures, videos, texts and share their thoughts to their friends, co-workers, acquaintances, classmates, and other people that surround them. </i>
 
 <i><b>Note</b>: I'm not a professional developer but I do want to become one someday. I see that this is a great start.</i>
+
+<i>All rights reserved | Galleria 2022</i>
+
