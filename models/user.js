@@ -179,5 +179,13 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  User.verifyUser = async ({ userId, transaction }) => {
+    return await User.update(
+      { verified: true },
+      { where: { id: userId } },
+      transaction
+    );
+  };
+
   return User;
 };

@@ -2,9 +2,10 @@ const { sequelize, Otp } = require("../../models");
 const { sign } = require("jsonwebtoken");
 const { OTP_TOKEN_SECRET } = require("../utils/constant");
 const { generateOtp } = require("../services/otpService");
+const { sendOtpVerificationEmail } = require("../services/mailingService");
 
 exports.createOTP = async (req, res) => {
-  const user = req.user;
+  const user = req.currentUser;
 
   const otp = generateOtp();
 
@@ -15,18 +16,18 @@ exports.createOTP = async (req, res) => {
     });
 
     const foundOtp = await Otp.findOtpTokenByUserId(user.id);
-    if (!foundOtp)
-      await Otp.createOtpToken({
-        token: otpToken,
-        userId: user.id,
-        transaction: t,
-      });
-    else
-      await Otp.updateExistingOtpToken({
-        token: otpToken,
-        userId: user.id,
-        transaction: t,
-      });
+
+    if (!foundOtp) return res.status(404).send({ msg: "Otp token not found" });
+
+    await Otp.updateExistingOtpToken({
+      token: otpToken,
+      userId: user.id,
+      otpId: foundOtp.id,
+      transaction: t,
+    });
+
+    await sendOtpVerificationEmail(user, otp);
+
     await t.commit();
 
     return res.status(200).send({ msg: "OTP Created!", otpToken });

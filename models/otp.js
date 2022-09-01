@@ -53,8 +53,17 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
-  Otp.updateExistingOtpToken = async ({ token, userId, transaction }) => {
-    return await Otp.update({ token }, { where: { userId } }, { transaction });
+  Otp.updateExistingOtpToken = async ({
+    token,
+    userId,
+    otpId,
+    transaction,
+  }) => {
+    return await Otp.update(
+      { otp: token },
+      { where: { userId, id: otpId } },
+      { transaction }
+    );
   };
 
   Otp.findOtpTokenByUserId = async (userId) => {

@@ -8,6 +8,7 @@ const {
   tokenRefresher,
   signOut,
   changeUserPassword,
+  validateUser,
 } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
@@ -28,6 +29,8 @@ routes.post(
   [checkIfEmailExists, validatePassword, checkIfUserIsVerified],
   signIn
 );
+
+routes.post("/verify", [checkIfEmailExists], validateUser);
 
 routes.get("/profile/:username", [checkIfUsernameExist], userProfile);
 

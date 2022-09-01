@@ -72,6 +72,43 @@ exports.signIn = async (req, res) => {
     .send({ accessToken, refreshToken, userData: req.currentUser });
 };
 
+exports.validateUser = async (req, res) => {
+  const { otp } = req.body;
+  const user = req.currentUser;
+
+  const otpData = await Otp.findOtpTokenByUserId(user.id);
+  const t = await sequelize.transaction();
+
+  if (!otpData) return res.status(404).send({ msg: "Otp token not found" });
+
+  verify(otpData.otp, OTP_TOKEN_SECRET, async (err, payload) => {
+    try {
+      if (err) {
+        console.log(err);
+
+        return res
+          .status(400)
+          .send({ msg: "OTP Token error", err: err.message });
+      }
+
+      if (payload.otp !== otp)
+        return res.status(403).send({ msg: "Invalid OTP Code" });
+
+      if (user.verified)
+        return res.status(200).send({ msg: "Account already verified" });
+
+      User.verifyUser({ userId: payload.userId, transaction: t });
+      await t.commit();
+
+      return res.status(200).send({ msg: "Account verified successfully." });
+    } catch (err) {
+      console.log(err);
+      await t.rollback();
+      return res.status(500).send({ msg: "Something went wrong." });
+    }
+  });
+};
+
 exports.userProfile = async (req, res) => {
   const username = req.params.username;
 
