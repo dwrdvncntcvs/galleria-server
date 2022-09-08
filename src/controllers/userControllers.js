@@ -65,7 +65,8 @@ exports.signIn = async (req, res) => {
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: "none",
+    sameSite: "None",
+    secure: true,
   });
 
   return res
