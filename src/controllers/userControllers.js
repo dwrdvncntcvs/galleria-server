@@ -65,6 +65,7 @@ exports.signIn = async (req, res) => {
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
+    sameSite: "none",
   });
 
   return res
@@ -167,6 +168,10 @@ exports.tokenRefresher = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.status(403).send({ msg: "Forbidden" });
   const refreshToken = req.cookies.jwt;
+  res.cookie("jwt", refreshToken, {
+    httpOnly: true,
+    sameSite: "None",
+  });
   const { id } = decode(refreshToken);
 
   const foundToken = await User.getRefreshTokenByUserId(id);
