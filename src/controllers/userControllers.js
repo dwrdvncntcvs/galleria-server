@@ -171,6 +171,7 @@ exports.tokenRefresher = async (req, res) => {
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
     sameSite: "None",
+    secure: true,
   });
   const { id } = decode(refreshToken);
 
@@ -199,7 +200,7 @@ exports.signOut = async (req, res) => {
   const cookies = req.cookies;
 
   if (!cookies?.jwt) {
-    res.clearCookie("jwt", { httpOnly: true });
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     return res.status(200).send({ msg: "Sign out successfully." });
   }
 
