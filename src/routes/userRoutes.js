@@ -9,6 +9,7 @@ const {
   signOut,
   changeUserPassword,
   validateUser,
+  userAccount,
 } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
@@ -31,6 +32,8 @@ routes.post(
 );
 
 routes.post("/verify", [checkIfEmailExists], validateUser);
+
+routes.get("/", [authenticate], userAccount);
 
 routes.get("/profile/:username", [checkIfUsernameExist], userProfile);
 

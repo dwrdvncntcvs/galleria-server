@@ -69,9 +69,7 @@ exports.signIn = async (req, res) => {
     secure: true,
   });
 
-  return res
-    .status(200)
-    .send({ accessToken, refreshToken, userData: req.currentUser });
+  return res.status(200).send({ accessToken });
 };
 
 exports.validateUser = async (req, res) => {
@@ -109,6 +107,19 @@ exports.validateUser = async (req, res) => {
       return res.status(500).send({ msg: "Something went wrong." });
     }
   });
+};
+
+exports.userAccount = async (req, res) => {
+  const user = req.user;
+
+  try {
+    const profile = await User.getUserProfileByUsername(user.username);
+
+    return res.send({ profile });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "Something went wrong." });
+  }
 };
 
 exports.userProfile = async (req, res) => {
