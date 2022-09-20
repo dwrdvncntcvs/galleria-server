@@ -189,15 +189,18 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.getRandomUserProfile = async (userId) => {
-    const { sequelize, Profile } = require("../models");
+    const { sequelize, Profile, Follower } = require("../models");
+
+    const following = await Follower.getFollowing(userId);
+    const userIdArr = getUsersId(following);
 
     return await User.findAll({
       where: {
         verified: true,
-        [Op.not]: { id: userId },
+        id: { [Op.notIn]: [userId, ...userIdArr] },
       },
       order: sequelize.random(),
-      limit: 6,
+      limit: 5,
       attributes: {
         exclude: ["password", "createdAt", "updatedAt"],
       },
@@ -211,4 +214,11 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   return User;
+};
+
+const getUsersId = (arrData) => {
+  return arrData.userData.map((user) => {
+    const { id } = user.dataValues;
+    return id;
+  });
 };
