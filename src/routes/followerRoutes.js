@@ -4,6 +4,7 @@ const {
   getFollower,
   getFollowing,
   unFollowUser,
+  getSuggestedFollow,
 } = require("../controllers/followerController");
 const {
   canFollow,
@@ -39,5 +40,7 @@ routes.put(
   [authenticate, checkIfUsernameExist, canUnFollow],
   unFollowUser
 );
+
+routes.get("/suggested/people", [authenticate], getSuggestedFollow);
 
 module.exports = routes;

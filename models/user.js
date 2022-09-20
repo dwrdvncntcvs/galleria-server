@@ -1,4 +1,5 @@
 "use strict";
+const { Sequelize, Op } = require("sequelize");
 const { Model } = require("sequelize");
 const { hash, genSalt, compare } = require("bcrypt");
 module.exports = (sequelize, DataTypes) => {
@@ -154,7 +155,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.getUserProfileByUsername = async (username) => {
-    const { Profile } = require("../models");
+    const { Profile, Sequelize } = require("../models");
 
     return await User.findOne({
       where: { username },
@@ -185,6 +186,28 @@ module.exports = (sequelize, DataTypes) => {
       { where: { id: userId } },
       transaction
     );
+  };
+
+  User.getRandomUserProfile = async (userId) => {
+    const { sequelize, Profile } = require("../models");
+
+    return await User.findAll({
+      where: {
+        verified: true,
+        [Op.not]: { id: userId },
+      },
+      order: sequelize.random(),
+      limit: 6,
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt"],
+      },
+      include: [
+        {
+          model: Profile,
+          attributes: { exclude: ["id", "createdAt", "updatedAt", "userId"] },
+        },
+      ],
+    });
   };
 
   return User;

@@ -73,3 +73,18 @@ exports.unFollowUser = async (req, res) => {
       .send({ msg: "Something went wrong.", err: err.message });
   }
 };
+
+exports.getSuggestedFollow = async (req, res) => {
+  const curUser = req.user;
+
+  try {
+    const users = await User.getRandomUserProfile(curUser.id);
+
+    return res.status(200).send({ msg: "Users", users });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .send({ msg: "Something went wrong.", err: err.message });
+  }
+};
