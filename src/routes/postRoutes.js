@@ -25,7 +25,7 @@ const { TEXT } = require("../utils/constant");
 
 const { upload } = new ImageService({
   storageType: process.env.M_S_TYPE,
-  name: "image-post",
+  name: "image_post",
 });
 
 const routes = express.Router();
