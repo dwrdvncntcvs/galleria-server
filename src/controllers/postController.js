@@ -146,16 +146,17 @@ exports.getAllPosts = async (req, res) => {
       user = userData;
     }
 
-    const data = await Post.findAllPosts({
+    const { rows, count } = await Post.findAllPosts({
       userId,
       userData: user,
       limit,
       page,
     });
 
-    const posts = await Promise.all(await ImagePost.getPostsImages(data));
+    const posts = await Promise.all(await ImagePost.getPostsImages(rows));
+    const info = { page: req.query.page, limit: req.query.limit, count };
 
-    return res.status(200).send({ msg: "All Posts.", posts });
+    return res.status(200).send({ msg: "All Posts.", info, posts });
   } catch (err) {
     console.log(err);
     return res

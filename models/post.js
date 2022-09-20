@@ -135,7 +135,7 @@ module.exports = (sequelize, DataTypes) => {
           ],
         };
 
-    return await Post.findAll(paramObj);
+    return await Post.findAndCountAll(paramObj);
   };
 
   const getUserId = (userData = []) => {

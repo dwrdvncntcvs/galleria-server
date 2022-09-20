@@ -66,7 +66,7 @@ const checkImage = (ext) => {
 exports.userPostsPagination = async (req, res, next) => {
   const limit = req.query.limit;
   const page = (req.query.page - 1) * limit;
-  const { id } = req.userParams;
+  const { id } = req.userParams || req.query;
 
   const data = await Post.findAndCountAll({
     where: { userId: id },
