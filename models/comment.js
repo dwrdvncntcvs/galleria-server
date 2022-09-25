@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
 
     return await Comment.findAll({
       where: { postId },
-      attributes: { exclude: ["userId", "postId", "updatedAt"] },
+      attributes: { exclude: ["userId", "updatedAt"] },
       include: [
         {
           model: User,
