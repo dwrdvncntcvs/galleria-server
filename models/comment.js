@@ -93,7 +93,6 @@ module.exports = (sequelize, DataTypes) => {
           attributes: {
             exclude: [
               "password",
-              "username",
               "refreshToken",
               "email",
               "createdAt",
