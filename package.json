@@ -11,7 +11,8 @@
     "migrate": "sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
     "undo:all": "sequelize db:migrate:undo:all",
-    "model": "sequelize model:generate"
+    "model": "sequelize model:generate",
+    "production": "node src/app.js"
   },
   "author": "Edward Vincent Cuevas",
   "license": "ISC",
