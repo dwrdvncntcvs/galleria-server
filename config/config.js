@@ -1,4 +1,4 @@
-if (process.env.MODE === "development") require("dotenv/config");
+// if (process.env.MODE === "development") require("dotenv/config");
 
 module.exports = {
   development: {
