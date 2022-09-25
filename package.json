@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js",
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
     "create": "sequelize db:create",
     "drop": "sequelize db:drop",
     "migrate": "sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
     "undo:all": "sequelize db:migrate:undo:all",
-    "model": "sequelize model:generate",
-    "production": "node src/app.js"
+    "model": "sequelize model:generate"
   },
   "author": "Edward Vincent Cuevas",
   "license": "ISC",
