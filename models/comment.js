@@ -142,5 +142,12 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  Comment.getCommentsCountByPost = async ({ postId }) => {
+    console.log("Post ID: ", postId);
+    return await Comment.findAndCountAll({
+      where: { postId },
+    });
+  };
+
   return Comment;
 };

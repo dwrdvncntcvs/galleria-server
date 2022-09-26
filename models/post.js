@@ -155,7 +155,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Post.getPostDetails = async ({ postId }) => {
-    const { User } = require("../models");
+    const { User, Profile } = require("../models");
 
     return await Post.findOne({
       where: { id: postId },
@@ -172,6 +172,23 @@ module.exports = (sequelize, DataTypes) => {
               "updatedAt",
             ],
           },
+          include: [
+            {
+              model: Profile,
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "id",
+                  "bio",
+                  "contactNumber",
+                  "dateOfBirth",
+                  "address",
+                  "userId",
+                ],
+              },
+            },
+          ],
         },
       ],
     });

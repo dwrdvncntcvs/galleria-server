@@ -201,9 +201,17 @@ exports.getPostDetails = async (req, res) => {
 
     const imagePost = await ImagePost.getAllPostImages({ postId: post.id });
 
+    const { count } = await Comment.getCommentsCountByPost({ postId: post.id });
+
+    const data = {
+      ...postDetails.dataValues,
+      ImagePosts: imagePost,
+      commentsCount: count,
+    };
+
     return res.status(200).send({
       msg: "Post Details Found",
-      data: { post: postDetails, imagePost },
+      post: data,
     });
   } catch (err) {
     console.log(err);
