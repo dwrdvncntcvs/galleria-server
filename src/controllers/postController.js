@@ -97,8 +97,16 @@ exports.getUserPosts = async (req, res) => {
   const { data, count } = res.posts;
 
   try {
-    const posts = await Promise.all(await ImagePost.getPostsImages(data));
+    const postsWithImages = await Promise.all(
+      await ImagePost.getPostsImages(data)
+    );
     const info = { page, limit, count };
+
+    const postsWithCommentsCount = await Promise.all(
+      await Comment.getCommentsCount(postsWithImages)
+    );
+
+    const posts = postsWithCommentsCount;
 
     return res.status(200).send({
       msg: `${first_name}'s Posts.`,
@@ -153,7 +161,14 @@ exports.getAllPosts = async (req, res) => {
       page,
     });
 
-    const posts = await Promise.all(await ImagePost.getPostsImages(rows));
+    const postsWithImages = await Promise.all(
+      await ImagePost.getPostsImages(rows)
+    );
+    const postsWithCommentsCount = await Promise.all(
+      await Comment.getCommentsCount(postsWithImages)
+    );
+
+    const posts = postsWithCommentsCount;
     const info = { page: req.query.page, limit: req.query.limit, count };
 
     return res.status(200).send({ msg: "All Posts.", info, posts });

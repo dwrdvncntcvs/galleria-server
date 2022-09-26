@@ -131,5 +131,16 @@ module.exports = (sequelize, DataTypes) => {
     return await Comment.destroy({ where: { id: commentId } }, { transaction });
   };
 
+  Comment.getCommentsCount = (posts = []) => {
+    return posts.map(async (post) => {
+      const commentsCount = await Comment.findAndCountAll({
+        where: { postId: post.id },
+      });
+
+      post["dataValues"]["commentsCount"] = commentsCount.count;
+      return post;
+    });
+  };
+
   return Comment;
 };
