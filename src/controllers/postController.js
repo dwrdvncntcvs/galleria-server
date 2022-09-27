@@ -205,7 +205,7 @@ exports.getPostDetails = async (req, res) => {
 
     const data = {
       ...postDetails.dataValues,
-      ImagePosts: imagePost,
+      ImagePost: imagePost,
       commentsCount: count,
     };
 
