@@ -4,3 +4,4 @@ exports.followerRoutes = require("./followerRoutes");
 exports.postRoutes = require("./postRoutes");
 exports.commentRoutes = require("./commentRoutes");
 exports.otpRoutes = require("./otpRoutes");
+exports.imageGalleryRoutes = require("./imageGalleryRoutes");

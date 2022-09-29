@@ -97,5 +97,25 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  ImagePost.getImagesByUserId = ({ userId, limit, offset }) => {
+    const { Post } = require("../models");
+
+    return ImagePost.findAndCountAll({
+      attributes: { exclude: ["createdAt"] },
+      order: [["updatedAt", "DESC"]],
+      limit,
+      offset,
+      include: [
+        {
+          model: Post,
+          attributes: {
+            exclude: ["id", "content", "updatedAt", "createdAt", "userId"],
+          },
+          where: { userId },
+        },
+      ],
+    });
+  };
+
   return ImagePost;
 };

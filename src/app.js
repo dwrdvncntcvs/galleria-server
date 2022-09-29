@@ -9,6 +9,7 @@ const {
   postRoutes,
   commentRoutes,
   otpRoutes,
+  imageGalleryRoutes,
 } = require("./routes");
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(followerRoutes);
 app.use("/post", postRoutes);
 app.use("/comment", commentRoutes);
 app.use("/otp", otpRoutes);
+app.use("/gallery", imageGalleryRoutes)
 
 app.use((error, req, res, next) => {
   return res.status(500).send({ msg: error.message });
