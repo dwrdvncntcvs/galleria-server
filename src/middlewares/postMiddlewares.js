@@ -1,7 +1,8 @@
 const { TEXT, IMAGE, JPEG, JPG, PNG } = require("../utils/constant");
 const fs = require("fs");
-const { Post } = require("../../models");
+const { Post, User, Profile } = require("../../models");
 const { isUuidValid } = require("../utils/validation");
+const { UserRefreshClient } = require("google-auth-library");
 
 exports.hasText = (type) => (req, res, next) => {
   const { content } = req.body;
@@ -70,11 +71,44 @@ exports.userPostsPagination = async (req, res, next) => {
 
   const data = await Post.findAndCountAll({
     where: { userId: id },
+    include: [
+      {
+        model: User,
+        attributes: {
+          exclude: [
+            "password",
+            "email",
+            "createdAt",
+            "updatedAt",
+            "refreshToken",
+          ],
+        },
+        include: [
+          {
+            model: Profile,
+            attributes: {
+              exclude: [
+                "createdAt",
+                "updatedAt",
+                "id",
+                "bio",
+                "contactNumber",
+                "dateOfBirth",
+                "address",
+                "userId",
+              ],
+            },
+          },
+        ],
+      },
+    ],
     attributes: { exclude: ["updatedAt"] },
     limit,
     offset: page,
     order: [["createdAt", "DESC"]],
   });
+
+  console.log(data);
 
   res.posts = { data: data.rows, count: data.count };
 
