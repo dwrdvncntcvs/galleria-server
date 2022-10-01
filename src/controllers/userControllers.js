@@ -1,4 +1,4 @@
-const { sequelize, User, Profile, Otp } = require("../../models");
+const { sequelize, User, Profile, Otp, Follower } = require("../../models");
 const { errorMessage } = require("../utils/error");
 const { sign, decode, verify } = require("jsonwebtoken");
 const {
@@ -128,7 +128,14 @@ exports.userProfile = async (req, res) => {
   try {
     const profile = await User.getUserProfileByUsername(username);
 
-    return res.send({ profile });
+    const { count: followersCount } = await Follower.getFollowers(profile.id);
+    const { count: followingCount } = await Follower.getFollowing(profile.id);
+
+    return res.send({
+      profile,
+      followingCount: followingCount,
+      followersCount,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).send({ msg: "Something went wrong." });
