@@ -180,7 +180,6 @@ module.exports = (sequelize, DataTypes) => {
                   "createdAt",
                   "updatedAt",
                   "id",
-                  "bio",
                   "contactNumber",
                   "dateOfBirth",
                   "address",
