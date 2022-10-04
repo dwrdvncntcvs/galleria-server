@@ -120,7 +120,7 @@ exports.getUserPosts = async (req, res) => {
 };
 
 exports.updatePostContent = async (req, res) => {
-  const postId = req.query.postId;
+  const postId = req.params.postId;
   const { content } = req.body;
 
   const t = await sequelize.transaction();

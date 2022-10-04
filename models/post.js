@@ -144,7 +144,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Post.removePost = async ({ post, transaction }) => {
     const { ImagePost } = require("../models");
-    const response = await ImagePost.findAll({ where: { postId: post.id } });
+    const response = await ImagePost.findAll(
+      { where: { postId: post.id } },
+      { transaction }
+    );
 
     await Post.destroy({ where: { id: post.id } }, { transaction });
 
