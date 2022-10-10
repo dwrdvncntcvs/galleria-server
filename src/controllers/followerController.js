@@ -61,6 +61,7 @@ exports.unFollowUser = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     await Follower.unfollowUser({ userData: foundUser, transaction: t });
+    await t.commit();
 
     return res.status(200).send({
       msg: `You successfully unfollow ${foundUser.first_name} ${foundUser.last_name}`,
