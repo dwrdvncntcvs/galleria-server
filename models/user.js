@@ -213,6 +213,42 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.searchUser = async (searchChar) => {
+    const { Op } = require("sequelize");
+    const { Profile } = require("../models");
+
+    console.log("Searching ... ", searchChar);
+    return User.findAndCountAll({
+      where: {
+        [Op.or]: {
+          first_name: { [Op.iLike]: `%${searchChar}%` },
+          last_name: { [Op.iLike]: `%${searchChar}%` },
+          username: { [Op.iLike]: `%${searchChar}%` },
+        },
+      },
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt"],
+      },
+      include: [
+        {
+          model: Profile,
+          attributes: {
+            exclude: [
+              "id",
+              "createdAt",
+              "updatedAt",
+              "userId",
+              "bio",
+              "contactNumber",
+              "dateOfBirth",
+              "address",
+            ],
+          },
+        },
+      ],
+    });
+  };
+
   return User;
 };
 

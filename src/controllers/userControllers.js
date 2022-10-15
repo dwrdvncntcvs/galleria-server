@@ -270,3 +270,15 @@ exports.changeUserPassword = async (req, res) => {
     return res.status(status).send({ msg, err: err.message });
   }
 };
+
+exports.findUser = async (req, res) => {
+  const { search } = req.query;
+
+  try {
+    const { rows: data, count } = await User.searchUser(search);
+
+    return res.status(200).send({ data, count });
+  } catch (err) {
+    return res.status(500).send({ msg: "Something went wrong" });
+  }
+};
