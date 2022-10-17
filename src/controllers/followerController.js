@@ -89,23 +89,3 @@ exports.getSuggestedFollow = async (req, res) => {
       .send({ msg: "Something went wrong.", err: err.message });
   }
 };
-
-exports.getFollowingUser = async (req, res) => {
-  const authUser = req.user;
-  const userParams = req.userParams;
-
-  try {
-    const { userData } = await Follower.getFollowing(authUser.id);
-
-    const filteredArrLen = userData.filter(
-      ({ dataValues }) => dataValues.id === userParams.dataValues.id
-    ).length;
-
-    console.log("Filtered List:", filteredArrLen);
-
-    return res.status(200).send({ isFollowed: filteredArrLen !== 0 });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send({ msg: "Something went wrong.", err });
-  }
-};

@@ -143,8 +143,11 @@ exports.userProfile = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-  const id = req.query.userId;
-  const { first_name, last_name, username, bio } = req.body;
+  const id = req.params.userId;
+  const { first_name, last_name, username, bio, address, dateOfBirth } =
+    req.body;
+
+  console.log("ID: ", id);
 
   const t = await sequelize.transaction();
   try {
@@ -155,7 +158,7 @@ exports.updateProfile = async (req, res) => {
     );
 
     await Profile.update(
-      { bio },
+      { bio, address, dateOfBirth },
       { where: { userId: id } },
       { transaction: t }
     );
@@ -163,6 +166,7 @@ exports.updateProfile = async (req, res) => {
     await t.commit();
     return res.status(200).send({ msg: "Profile Updated." });
   } catch (err) {
+    console.log(err.message);
     const { status, msg } = errorMessage(err);
     return res.status(status).send({ msg });
   }
