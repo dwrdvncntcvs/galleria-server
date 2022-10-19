@@ -71,6 +71,12 @@ module.exports = (sequelize, DataTypes) => {
     );
   };
 
+  Profile.checkIfUserProfileImageExists = async (id) => {
+    const profileData = await Profile.findOne({ where: { userId: id } });
+
+    return profileData.dataValues.profileImage.length > 0;
+  };
+
   Profile.updateProfileImage = async (
     { profileImage, userId },
     transaction
