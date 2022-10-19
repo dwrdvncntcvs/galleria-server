@@ -159,7 +159,7 @@ module.exports = (sequelize, DataTypes) => {
 
     return await User.findOne({
       where: { username },
-      attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      attributes: { exclude: ["password", "updatedAt"] },
       include: [
         {
           model: Profile,
