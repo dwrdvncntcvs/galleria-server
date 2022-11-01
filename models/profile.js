@@ -35,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
       contactNumber: {
         type: DataTypes.STRING,
         allowNull: true,
+        validate: {
+          is: {
+            args: /^(09|\+639)\d{9}$/g,
+            msg: [401, "Please enter a valid contact number."],
+          },
+        },
       },
       dateOfBirth: {
         type: DataTypes.DATE,

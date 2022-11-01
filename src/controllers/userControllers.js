@@ -286,3 +286,26 @@ exports.findUser = async (req, res) => {
     return res.status(500).send({ msg: "Something went wrong" });
   }
 };
+
+exports.updateUserAccount = async (req, res) => {
+  const { userId } = req.params;
+  const { email, username, contact_number } = req.body;
+
+  const t = await sequelize.transaction();
+
+  try {
+    const userData = await User.updateUserAccount(
+      { id: userId },
+      { username, contactNumber: contact_number },
+      { transaction: t }
+    );
+
+    return res.status(200).send({
+      ...userData,
+    });
+  } catch (err) {
+    await t.rollback();
+    const { status, msg } = errorMessage(err);
+    return res.status(status).send({ msg });
+  }
+};

@@ -249,6 +249,26 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.updateUserAccount = async ({ id }, data, { transaction }) => {
+    const { Profile } = require("../models");
+
+    await User.update(
+      { username: data.username },
+      { where: { id } },
+      { transaction }
+    );
+
+    await Profile.update(
+      { contactNumber: data.contactNumber },
+      { where: { userId: id } },
+      { transaction }
+    );
+
+    await transaction.commit();
+
+    return data;
+  };
+
   return User;
 };
 

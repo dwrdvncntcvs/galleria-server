@@ -11,6 +11,7 @@ const {
   validateUser,
   userAccount,
   findUser,
+  updateUserAccount,
 } = require("../controllers/userControllers");
 const {
   checkIfEmailExists,
@@ -53,5 +54,7 @@ routes.put(
 );
 
 routes.get("/find-user", [authenticate], findUser);
+
+routes.put("/account/:userId", [authenticate, canEdit], updateUserAccount);
 
 module.exports = routes;
