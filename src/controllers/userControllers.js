@@ -179,6 +179,7 @@ exports.deleteUser = async (req, res) => {
   try {
     await User.destroy({ where: { id } }, { transaction: t });
     await t.commit();
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
     return res.status(200).send({ msg: "User Deleted." });
   } catch (err) {
