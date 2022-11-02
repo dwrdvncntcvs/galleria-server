@@ -17,13 +17,13 @@ exports.createTextPost = async (req, res) => {
 
   const t = await sequelize.transaction();
   try {
-    await Post.create(
+    const post = await Post.create(
       { content, withImage: false, userId: user.id },
       { transaction: t }
     );
     await t.commit();
 
-    return res.status(200).send({ msg: "Posted." });
+    return res.status(200).send({ msg: "Posted.", postId: post.id });
   } catch (err) {
     console.log("Error: ", err);
     const { status, msg } = errorMessage(err);
@@ -52,7 +52,7 @@ exports.createImagePost = async (req, res) => {
     });
     await t.commit();
 
-    return res.status(200).send({ msg: "Posted." });
+    return res.status(200).send({ msg: "Posted.", postId: post.id });
   } catch (err) {
     console.log(err);
     const { status, msg } = errorMessage(err);
@@ -81,7 +81,7 @@ exports.createImagesPost = async (req, res) => {
 
     await t.commit();
 
-    return res.status(200).send({ msg: "Images Posted." });
+    return res.status(200).send({ msg: "Images Posted.", postId: post.id });
   } catch (err) {
     console.log(err);
     const { status, msg } = errorMessage(err);
